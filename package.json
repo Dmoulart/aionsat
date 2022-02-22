@@ -1,0 +1,19 @@
+{
+	"name": "c",
+	"version": "1.0.0",
+	"description": "A study of sat algolrythm",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"/dist"
+	],
+	"author": "aion",
+	"license": "MIT",
+	"scripts": {
+		"watch": "tsc --w",
+		"dev": "parcel serve ./example/index.html && watch"
+	},
+	"devDependencies": {
+		"parcel": "^2.3.2"
+	}
+}
