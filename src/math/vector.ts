@@ -178,10 +178,12 @@ export class Vector {
      */
 
     norm() {
-        return new Vector(
-            this.x / (Math.sqrt(this.x * this.x + this.y * this.y)),
-            this.y / (Math.sqrt(this.x * this.x + this.y * this.y))
-        );
+        const unit = this.mag()
+        return new Vector(this.x / unit, this.y / unit)
+        // return new Vector(
+        //     this.x / (Math.sqrt(this.x * this.x + this.y * this.y)),
+        //     this.y / (Math.sqrt(this.x * this.x + this.y * this.y))
+        // );
     }
 
     mult(n: number): Vector {
@@ -196,6 +198,13 @@ export class Vector {
 
     magSq(): number {
         return (this.x * this.x) + (this.y * this.y)
+    }
+
+
+    perp(): Vector {
+        this.x = this.y
+        this.y = -this.x
+        return this
     }
 
     static Equals(v1: Vector, v2: Vector): boolean {

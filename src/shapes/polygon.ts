@@ -11,14 +11,16 @@ export class Polygon {
 
     project(axis: Vector): Projection {
         const vertices = this.vertices
-        let min = axis.dot(vertices[0])
-        let max = min
-        for (let i = 1; i < vertices.length; i++) {
-            const dot = vertices[i].dot(axis)
+        const len = vertices.length
+        let min = Number.MAX_VALUE // axis.dot(vertices[0])
+        let max = Number.MIN_VALUE // min
+        for (let i = 0; i < len; i++) {
+            const dot = axis.dot(vertices[i])
+            if (dot > max) {
+                max = dot
+            }
             if (dot < min) {
                 min = dot
-            } else if (dot > max) {
-                max = dot
             }
         }
         return new Projection(min, max)
@@ -28,15 +30,23 @@ export class Polygon {
         return this._vertices
     }
 
+    set vertices(vertices: Vector[]) {
+        this._vertices = vertices
+    }
+
     get axes(): Vector[] {
         const vertices = this.vertices
+        const len = vertices.length
         const axes = []
-        for (let i = 0; i < vertices.length; i++) {
+        for (let i = 0; i < len; i++) {
             const currentVertex = vertices[i]
             const nextVertex = vertices[i + 1] || vertices[0]
-            const edge = currentVertex.sub(nextVertex)
-            const normal = edge.perpendicular().norm()
-            console.log(normal)
+            const edge = new Vector(
+                nextVertex.x - currentVertex.x,
+                nextVertex.y - currentVertex.y
+            )
+            const perp = new Vector(-edge.y, edge.x)
+            const normal = perp.norm()
             axes[i] = normal
         }
         return axes
