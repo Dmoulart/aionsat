@@ -20,7 +20,7 @@ export class Projection {
     /**
      * Returns true if two projections overlap.
      * 
-     * @param other 
+     * @param otherProjection 
      * @returns is overlapping with other projection
      */
     overlap(other: Projection): boolean {

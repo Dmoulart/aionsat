@@ -9,12 +9,15 @@ import { Polygon } from "./shapes/polygon";
 export class Sat {
 
     /**
-     * Detect the collision between two polygons
+     * Detect the collision between two polygons and return the overlap value as well as the
+     * collision normal.
+     * 
      * @param polyA 
      * @param polyB
+     * @returns collision response 
      */
     collides(a: Polygon, b: Polygon): {
-        smallest: Vector,
+        normal: Vector,
         overlap: number
     } | false {
         const axesA = a.axes;
@@ -24,8 +27,9 @@ export class Sat {
         const lenB = axesB.length;
 
         let overlap = Number.MAX_VALUE
-        let smallest: Vector
+        let normal: Vector
 
+        // Project onto each axis of the first shape
         for (let i = 0; i < lenA; i++) {
             const axis = axesA[i];
             const projectionA = a.project(axis);
@@ -40,11 +44,12 @@ export class Sat {
                 const o = projectionA.getOverlap(projectionB);
                 if (o < overlap) {
                     overlap = o;
-                    smallest = axis
+                    normal = axis
                 }
             }
         }
 
+        // Project onto each axis of the second shape
         for (let i = 0; i < lenB; i++) {
             const axis = axesB[i];
             const projectionA = a.project(axis);
@@ -56,26 +61,24 @@ export class Sat {
                 const o = projectionA.getOverlap(projectionB);
                 if (o < overlap) {
                     overlap = o;
-                    smallest = axis
+                    normal = axis
                 }
             }
         }
 
 
-        // if the smallest penetration normal
-        //     points into shape b,
-        //     flip it
-        //https://community.onelonecoder.com/2020/09/26/separating-axis-theorem-refinements-and-expansion/
-        if ((a.vertices[0].sub(b.vertices[0]).dot(smallest) < 0))
-            smallest = smallest.scale(-1)
+        // if the smallest penetration normal points into shape b flip it
+        // https://community.onelonecoder.com/2020/09/26/separating-axis-theorem-refinements-and-expansion/
+        if ((a.vertices[0].sub(b.vertices[0]).dot(normal) < 0))
+            normal = normal.scale(-1)
 
         console.log({
             overlap,
-            smallest
+            normal
         })
         return {
-            overlap,
-            smallest
+            normal,
+            overlap
         }
     }
 
