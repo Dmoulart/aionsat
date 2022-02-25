@@ -85,14 +85,12 @@ export class Vector {
     }
 
     /**
-     * Mutates a vector to be perpendicular to itself. Careful as thie function mutates the vector.
+     * Mutates a vector to be perpendicular to itself.
      * 
      * @returns this
      */
     perp(): Vector {
-        this.x = this.y
-        this.y = -this.x
-        return this
+        return new Vector(this.y, -this.x)
     }
 }
 
