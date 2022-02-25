@@ -40,7 +40,7 @@ console.log(sat.collides(polyA, polyB));
     ctx.clearRect(0, 0, innerWidth, innerHeight)
     const collision = sat.collides(polyA, polyB)
     if (collision) {
-        polyA.vertices = polyA.vertices.map(v => v.add(collision.smallest.scale(collision.overlap + 1)))
+        polyA.vertices = polyA.vertices.map(v => v.add(collision.normal.scale(collision.overlap + 1)))
     }
     drawPolygon(polyA)
     drawPolygon(polyB, collision ? 'red' : 'green')
