@@ -9,6 +9,10 @@ import { Shape } from "./shape";
  */
 export class Polygon extends Shape {
 
+    /**
+     * The vertices in their relative positions.
+     * 
+     */
     private _vertices: Vector[] = []
 
     constructor(pos: Vector, vertices: Vector[] = []) {
@@ -46,7 +50,7 @@ export class Polygon extends Shape {
     }
 
     /**
-     * Returns the vertices world positions of the polygon.
+     * Returns the vertices absolute positions of the polygon.
      * 
      * @returns vertices
      */
@@ -54,6 +58,11 @@ export class Polygon extends Shape {
         return this._vertices.map(vertice => vertice.add(this.pos))
     }
 
+    /**
+     * Set the vertices relative positions.
+     * 
+     * @param vertices
+     */
     set vertices(vertices: Vector[]) {
         this._vertices = vertices
     }

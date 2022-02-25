@@ -1,4 +1,6 @@
-import { Polygon, Sat, vec } from '../dist'
+import { Polygon, Sat, vec, Vector } from '../dist'
+import { Circle } from '../dist/shapes/circle'
+import { Shape } from '../dist/shapes/shape'
 
 // Create canvas
 const canvas = document.createElement('canvas')
@@ -34,25 +36,45 @@ const polyB = new Polygon(
     verticesB
 );
 
+const circleA = new Circle(mousePosition, 100)
+
+const circleB = new Circle(vec(400, 200), 100)
+
 document.onmousemove = (e: MouseEvent) => {
     polyB.vertices = verticesB.map(v => vec(v.x + e.clientX - 200, v.y + e.clientY - 200))
     mousePosition = vec(e.clientX, e.clientY)
+    circleA.pos = mousePosition
 }
 
 const sat = new Sat();
 
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
-    const collision = sat.collides(polyA, polyB)
+
+
+    // const collision = sat.intersects(polyA, polyB)
+
+    // drawPolygon(polyA)
+    // drawPolygon(polyB, collision ? 'red' : 'green')
+
+    const collision = sat.intersects(circleA, circleB)
+
     if (collision) {
-        polyA.pos = polyA.pos.add(collision.normal.scale(collision.overlap + 1))
+        resolve(collision, circleA)
     }
-    drawPolygon(polyA)
-    drawPolygon(polyB, collision ? 'red' : 'green')
+
+
+    drawCircle(circleA)
+    drawCircle(circleB)
 
     requestAnimationFrame(loop)
+
+
 })()
 
+function resolve(collision: { overlap: number, normal: Vector }, shape: Shape) {
+    shape.pos = shape.pos.add(collision.normal.scale(collision.overlap + 1))
+}
 
 function drawPolygon(polygon: Polygon, color = "white") {
     ctx.strokeStyle = color
@@ -66,6 +88,14 @@ function drawPolygon(polygon: Polygon, color = "white") {
     })
     ctx.closePath()
     ctx.stroke()
+}
+
+function drawCircle(circle: Circle, color = "white") {
+    ctx.strokeStyle = color
+    ctx.beginPath()
+    ctx.arc(circle.pos.x, circle.pos.y, circle.radius, 0, Math.PI * 2)
+    ctx.stroke()
+    ctx.closePath()
 }
 
 function drawAxes(poly: Polygon) {

@@ -1,5 +1,7 @@
 import { Vector } from ".";
+import { Circle } from "./shapes/circle";
 import { Polygon } from "./shapes/polygon";
+import { Shape } from "./shapes/shape";
 
 /**
  * An implementation of the Separating Axis Theorem, greatly inspired from the dyn4j blog post.
@@ -12,11 +14,36 @@ export class Sat {
      * Detect the collision between two polygons and return the overlap value as well as the
      * collision normal.
      * 
+     * @param shape 
+     * @param otherShape
+     * @returns collision response 
+     */
+    public intersects(a: Shape, b: Shape): {
+        normal: Vector,
+        overlap: number
+    } | false {
+        if (a instanceof Polygon && b instanceof Polygon)
+            return this.polygonIntersectsPolgon(a, b)
+
+        if (a instanceof Circle && b instanceof Circle)
+            return this.circleIntersectsCircle(a, b)
+
+        if (a instanceof Polygon && b instanceof Circle)
+            return this.polygonIntersectsCircle(a, b)
+
+        console.warn(`Unsupported collision detection between ${a.constructor.name} and ${b.constructor.name}`, a, b)
+        return false
+    }
+
+    /**
+     * Detect the collision between two polygons and return the overlap value as well as the
+     * collision normal.
+     * 
      * @param polyA 
      * @param polyB
      * @returns collision response 
      */
-    collides(a: Polygon, b: Polygon): {
+    public polygonIntersectsPolgon(a: Polygon, b: Polygon): {
         normal: Vector,
         overlap: number
     } | false {
@@ -28,6 +55,7 @@ export class Sat {
 
         let overlap = Number.MAX_VALUE
         let normal: Vector
+
 
         // Project onto each axis of the first shape
         for (let i = 0; i < lenA; i++) {
@@ -48,6 +76,7 @@ export class Sat {
                 }
             }
         }
+
 
         // Project onto each axis of the second shape
         for (let i = 0; i < lenB; i++) {
@@ -72,15 +101,45 @@ export class Sat {
         if ((a.vertices[0].sub(b.vertices[0]).dot(normal) < 0))
             normal = normal.scale(-1)
 
-        console.log({
-            overlap,
-            normal
-        })
+
         return {
             normal,
             overlap
         }
     }
 
+    /**
+     * Detect the collision between two circles and return the overlap value as well as the
+     * collision normal.
+     * 
+     * @param a circle
+     * @param b other circle
+     * @returns collision response
+     */
+    public circleIntersectsCircle(a: Circle, b: Circle): false | { normal: Vector; overlap: number; } {
+        const distance = a.pos.sub(b.pos);
+        const distanceSquared = distance.dot(distance);
+
+        const radiusSum = a.radius + b.radius;
+
+        if (distanceSquared > radiusSum * radiusSum) return false;
+
+        return {
+            normal: new Vector(distance.x / Math.sqrt(distanceSquared), distance.y / Math.sqrt(distanceSquared)),
+            overlap: radiusSum - Math.sqrt(distanceSquared)
+        }
+    }
+
+    /**
+     * Detect the collision between a polygon and a circle and return the overlap value as well as the
+     * collision normal.
+     * 
+     * @param a circle
+     * @param b other circle
+     * @returns collision response
+     */
+    public polygonIntersectsCircle(a: Polygon, b: Circle): false | { normal: Vector; overlap: number; } {
+        throw new Error("Method not implemented.");
+    }
 }
 

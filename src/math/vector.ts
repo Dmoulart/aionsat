@@ -45,6 +45,16 @@ export class Vector {
     }
 
     /**
+     * Divide two vectors together and returns the resulting vector.
+     * 
+     * @param vector
+     * @returns divided vector
+     */
+    div(v: Vector): Vector {
+        return new Vector(this.x / v.x, this.y / v.y)
+    }
+
+    /**
      * Returns a vector that is equal to the vector multiplied by -1.
      * 
      * @returns negative vector
