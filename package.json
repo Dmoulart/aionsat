@@ -14,6 +14,7 @@
 		"dev": "parcel serve ./example/index.html && watch"
 	},
 	"devDependencies": {
+		"@parcel/transformer-typescript-types": "^2.3.2",
 		"parcel": "^2.3.2"
 	}
 }

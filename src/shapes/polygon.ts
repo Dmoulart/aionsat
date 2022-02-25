@@ -1,16 +1,18 @@
 import { Projection } from "..";
 import { Vector } from "../math/vector";
+import { Shape } from "./shape";
 
 /**
  * A polygon is a collection of vertices that form a closed shape. 
  * Only convex polygons can be used for this type of collision detection.
  * 
  */
-export class Polygon {
+export class Polygon extends Shape {
 
     private _vertices: Vector[] = []
 
-    constructor(vertices: Vector[] = []) {
+    constructor(pos: Vector, vertices: Vector[] = []) {
+        super(pos)
         if (vertices.length < 3) {
             console.error(`Polygon has been instanciated with less than 3 vertices.`)
         }
@@ -44,12 +46,12 @@ export class Polygon {
     }
 
     /**
-     * Returns the vertices of the polygon as a collection of vector.
+     * Returns the vertices world positions of the polygon.
      * 
      * @returns vertices
      */
     get vertices(): Vector[] {
-        return this._vertices
+        return this._vertices.map(vertice => vertice.add(this.pos))
     }
 
     set vertices(vertices: Vector[]) {

@@ -1,5 +1,6 @@
 import { Polygon, Sat, vec } from '../dist'
 
+// Create canvas
 const canvas = document.createElement('canvas')
 canvas.width = innerWidth
 canvas.height = innerHeight
@@ -7,11 +8,17 @@ document.body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 ctx.strokeStyle = 'white'
 
+// Mouse position
+let mousePosition = vec(0, 0)
+
+
+// Instantiate Polygons
 const polyA = new Polygon(
+    vec(window.innerWidth / 2, window.innerHeight / 2),
     [
-        vec(innerWidth / 2 + 100, innerHeight / 2 + 100),
-        vec(innerWidth / 2 + 100, innerHeight / 2 + 200),
-        vec(innerWidth / 2 + 200, innerHeight / 2 + 100),
+        vec(100, 100),
+        vec(100, 200),
+        vec(200, 100),
     ]
 );
 
@@ -23,24 +30,22 @@ const verticesB = [
 ]
 
 const polyB = new Polygon(
+    mousePosition,
     verticesB
 );
 
 document.onmousemove = (e: MouseEvent) => {
     polyB.vertices = verticesB.map(v => vec(v.x + e.clientX - 200, v.y + e.clientY - 200))
+    mousePosition = vec(e.clientX, e.clientY)
 }
 
-const sat = new Sat()
-
-console.log(polyA);
-
-console.log(sat.collides(polyA, polyB));
+const sat = new Sat();
 
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
     const collision = sat.collides(polyA, polyB)
     if (collision) {
-        polyA.vertices = polyA.vertices.map(v => v.add(collision.normal.scale(collision.overlap + 1)))
+        polyA.pos = polyA.pos.add(collision.normal.scale(collision.overlap + 1))
     }
     drawPolygon(polyA)
     drawPolygon(polyB, collision ? 'red' : 'green')
