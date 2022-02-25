@@ -1,44 +1,94 @@
+/**
+ * A vector is a point in a coordinate system, represented by a pair of numbers.
+ */
 export class Vector {
 
     constructor(public x: number, public y: number) { }
 
-    static get Origin(): Vector {
+    /**
+     * Return a vector of value zero, representing the origin of the coordinate system.
+     * 
+     * @returns origin
+     */
+    static get origin(): Vector {
         return new Vector(0, 0)
     }
 
-    static get Zero(): Vector {
-        return new Vector(0, 0)
-    }
-
+    /**
+     * Multiply the two axes of a vector by a given number.
+     * 
+     * @param size 
+     * @returns scaled vector
+     */
     scale(size: number): Vector {
         return new Vector(this.x * size, this.y * size)
     }
 
+    /**
+     * Substract two vectors together and returns the resulting vector.
+     * 
+     * @param  vector 
+     * @returns difference vector
+     */
     sub(v: Vector): Vector {
         return new Vector(this.x - v.x, this.y - v.y)
     }
 
+    /**
+     * Add two vectors together and returns the resulting vector.
+     * 
+     * @param  vector 
+     * @returns sum vector
+     */
     add(v: Vector): Vector {
         return new Vector(this.x + v.x, this.y + v.y)
     }
 
+    /**
+     * Returns a vector that is equal to the vector multiplied by -1.
+     * 
+     * @returns negative vector
+     */
     negate(): Vector {
         return this.scale(-1)
     }
 
+    /**
+     * Returns the dot product of a vector resulting from the multiplication of two vectors together,
+     * and the some of their axes. 
+     * 
+     * @param vector
+     * @returns dot product
+     */
     dot(v: Vector): number {
         return this.x * v.x + this.y * v.y
     }
 
-    norm() {
+    /**
+     * Returns the normal of the vector. The normal is also known as the unit vector. It is a vector of 
+     * size 1, pointing in the same direction as the original vector.
+     * 
+     * @returns normal
+     */
+    norm(): Vector {
         const mag = this.mag()
         return new Vector(this.x / mag, this.y / mag)
     }
 
+    /**
+     * Returns the magnitude or the length of the vector.
+     * 
+     * @returns magnitude
+     */
     mag(): number {
         return Math.sqrt((this.x * this.x) + (this.y * this.y))
     }
 
+    /**
+     * Mutates a vector to be perpendicular to itself. Careful as thie function mutates the vector.
+     * 
+     * @returns this
+     */
     perp(): Vector {
         this.x = this.y
         this.y = -this.x
