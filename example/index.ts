@@ -10,9 +10,8 @@ ctx.strokeStyle = 'white'
 const polyA = new Polygon(
     [
         vec(innerWidth / 2 + 100, innerHeight / 2 + 100),
-        vec(innerWidth / 2 + 200, innerHeight / 2 + 100),
-        vec(innerWidth / 2 + 200, innerHeight / 2 + 200),
         vec(innerWidth / 2 + 100, innerHeight / 2 + 200),
+        vec(innerWidth / 2 + 200, innerHeight / 2 + 100),
     ]
 );
 
