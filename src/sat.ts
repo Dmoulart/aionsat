@@ -22,6 +22,7 @@ export class Sat {
         normal: Vector,
         overlap: number
     } | false {
+
         if (a instanceof Polygon && b instanceof Polygon)
             return this.polygonIntersectsPolgon(a, b)
 
@@ -31,7 +32,13 @@ export class Sat {
         if (a instanceof Polygon && b instanceof Circle)
             return this.polygonIntersectsCircle(a, b)
 
+        if (a instanceof Circle && b instanceof Polygon)
+            return this.circleIntersectsPolygon(a, b)
+
+
         console.warn(`Unsupported collision detection between ${a.constructor.name} and ${b.constructor.name}`, a, b)
+
+
         return false
     }
 
@@ -142,8 +149,8 @@ export class Sat {
      * Detect the collision between a polygon and a circle and return the overlap value as well as the
      * collision normal.
      * 
-     * @param a circle
-     * @param b other circle
+     * @param a polygon
+     * @param b circle
      * @returns collision response
      */
     public polygonIntersectsCircle(a: Polygon, b: Circle): false | { normal: Vector; overlap: number; } {
@@ -200,6 +207,25 @@ export class Sat {
         return {
             normal,
             overlap
+        }
+    }
+
+    /**
+     * Detect the collision between a circle and a polygon and return the overlap value as well as the
+     * collision normal.
+     * 
+     * @param a circle
+     * @param b polygon
+     * @returns collision response
+     */
+    public circleIntersectsPolygon(a: Circle, b: Polygon): false | { normal: Vector; overlap: number; } {
+        const response = this.polygonIntersectsCircle(b, a)
+
+        if (!response) return false
+
+        return {
+            normal: response.normal.scale(-1),
+            overlap: response.overlap
         }
     }
 }

@@ -58,10 +58,10 @@ const sat = new Sat();
     drawPolygon(polyB)
     // drawPolygon(polyB, collision ? 'red' : 'green')
 
-    const collision = sat.intersects(polyB, circleB)
+    const collision = sat.intersects(circleB, polyB)
 
     if (collision) {
-        resolve(collision, polyB)
+        resolve(collision, circleB)
     }
 
 
