@@ -58,17 +58,17 @@ export class Sat {
 
 
         // Project onto each axis of the first shape
+
         for (let i = 0; i < lenA; i++) {
             const axis = axesA[i];
+
             const projectionA = a.project(axis);
             const projectionB = b.project(axis);
+
             if (!projectionA.overlap(projectionB)) {
                 return false;
             }
             else {
-                if (axis.x === 1) {
-                    console.log('axis', axis);
-                }
                 const o = projectionA.getOverlap(projectionB);
                 if (o < overlap) {
                     overlap = o;
@@ -78,11 +78,14 @@ export class Sat {
         }
 
 
-        // Project onto each axis of the second shape
+        // Project onto each axis of the second Shape
+
         for (let i = 0; i < lenB; i++) {
             const axis = axesB[i];
+
             const projectionA = a.project(axis);
             const projectionB = b.project(axis);
+
             if (!projectionA.overlap(projectionB)) {
                 return false;
             }
@@ -108,6 +111,7 @@ export class Sat {
         }
     }
 
+
     /**
      * Detect the collision between two circles and return the overlap value as well as the
      * collision normal.
@@ -125,10 +129,14 @@ export class Sat {
         if (distanceSquared > radiusSum * radiusSum) return false;
 
         return {
-            normal: new Vector(distance.x / Math.sqrt(distanceSquared), distance.y / Math.sqrt(distanceSquared)),
+            normal: new Vector(
+                distance.x / Math.sqrt(distanceSquared),
+                distance.y / Math.sqrt(distanceSquared)
+            ),
             overlap: radiusSum - Math.sqrt(distanceSquared)
         }
     }
+
 
     /**
      * Detect the collision between a polygon and a circle and return the overlap value as well as the
@@ -139,7 +147,60 @@ export class Sat {
      * @returns collision response
      */
     public polygonIntersectsCircle(a: Polygon, b: Circle): false | { normal: Vector; overlap: number; } {
-        throw new Error("Method not implemented.");
+        let overlap = Number.MAX_VALUE
+        let normal: Vector
+
+        const len = a.axes.length
+
+        for (let i = 0; i < len; i++) {
+            const axis = a.axes[i]
+            const projectionA = a.project(axis)
+            const projectionB = b.project(axis)
+
+            if (!projectionA.overlap(projectionB)) {
+                return false;
+            }
+            else {
+                const overlapValue = projectionA.getOverlap(projectionB);
+                if (overlapValue < overlap) {
+                    overlap = overlapValue;
+                    normal = axis
+                }
+            }
+        }
+
+        const { vertexIndex } = b.findClosestPolygonPoint(a)
+        const closestPoint = a.vertices[vertexIndex]
+
+        const axis = closestPoint.sub(b.pos).norm()
+
+        const projectionA = a.project(axis)
+        const projectionB = b.project(axis)
+
+        if (!projectionA.overlap(projectionB)) {
+            return false;
+        }
+        else {
+            const overlapValue = projectionA.getOverlap(projectionB);
+
+            if (overlapValue < overlap) {
+                overlap = overlapValue;
+                normal = axis
+            }
+        }
+
+        if ((a.centroid.sub(b.pos).dot(normal) < 0))
+            normal = normal.scale(-1)
+
+        console.log({
+            normal,
+            overlap
+        })
+
+        return {
+            normal,
+            overlap
+        }
     }
 }
 

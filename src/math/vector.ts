@@ -64,6 +64,16 @@ export class Vector {
     }
 
     /**
+     * Returns a vector that is equal to the vector multiplied by the other vector.
+     * 
+     * @param vector
+     * @returns multiplicated vector
+     */
+    mult(v: Vector): Vector {
+        return new Vector(this.x * v.x, this.y * v.y)
+    }
+
+    /**
      * Returns the dot product of a vector resulting from the multiplication of two vectors together,
      * and the some of their axes. 
      * 

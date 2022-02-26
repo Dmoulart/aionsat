@@ -25,10 +25,10 @@ const polyA = new Polygon(
 );
 
 const verticesB = [
-    vec(100 + 1, 100 + 20),
-    vec(200 + 1, 100 + 20),
-    vec(200 + 1, 200 + 20),
-    vec(100 + 1, 200 + 20),
+    vec(0, 0),
+    vec(100, 0),
+    vec(100, 100),
+    vec(0, 100),
 ]
 
 const polyB = new Polygon(
@@ -41,9 +41,10 @@ const circleA = new Circle(mousePosition, 100)
 const circleB = new Circle(vec(400, 200), 100)
 
 document.onmousemove = (e: MouseEvent) => {
-    polyB.vertices = verticesB.map(v => vec(v.x + e.clientX - 200, v.y + e.clientY - 200))
+
     mousePosition = vec(e.clientX, e.clientY)
-    circleA.pos = mousePosition
+    // circleA.pos = mousePosition
+    polyB.pos = mousePosition
 }
 
 const sat = new Sat();
@@ -54,13 +55,13 @@ const sat = new Sat();
 
     // const collision = sat.intersects(polyA, polyB)
 
-    // drawPolygon(polyA)
+    drawPolygon(polyB)
     // drawPolygon(polyB, collision ? 'red' : 'green')
 
-    const collision = sat.intersects(circleA, circleB)
+    const collision = sat.intersects(polyB, circleB)
 
     if (collision) {
-        resolve(collision, circleA)
+        resolve(collision, polyB)
     }
 
 

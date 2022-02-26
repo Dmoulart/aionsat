@@ -29,7 +29,7 @@ export class Polygon extends Shape {
      * @param axis 
      * @returns projection
      */
-    project(axis: Vector): Projection {
+    public project(axis: Vector): Projection {
         const vertices = this.vertices
         const len = vertices.length
 
@@ -54,7 +54,7 @@ export class Polygon extends Shape {
      * 
      * @returns vertices
      */
-    get vertices(): Vector[] {
+    public get vertices(): Vector[] {
         return this._vertices.map(vertice => vertice.add(this.pos))
     }
 
@@ -63,7 +63,7 @@ export class Polygon extends Shape {
      * 
      * @param vertices
      */
-    set vertices(vertices: Vector[]) {
+    public set vertices(vertices: Vector[]) {
         this._vertices = vertices
     }
 
@@ -72,7 +72,7 @@ export class Polygon extends Shape {
      * 
      * @returns axes
      */
-    get axes(): Vector[] {
+    public get axes(): Vector[] {
         const vertices = this.vertices
         const len = vertices.length
 
@@ -88,6 +88,28 @@ export class Polygon extends Shape {
         }
 
         return axes
+    }
+
+    /**
+     * Returns the center of the polygon.
+     * 
+     * @returns centroid
+     */
+    public get centroid(): Vector {
+        const vertices = this.vertices
+        const len = vertices.length
+
+        return vertices.reduce(function (center, point, i) {
+            center.x += point.x;
+            center.y += point.y;
+
+            if (i === len - 1) {
+                center.x /= len;
+                center.y /= len;
+            }
+
+            return center;
+        }, new Vector(0, 0));
     }
 }
 
