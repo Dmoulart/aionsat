@@ -22,6 +22,13 @@ const polyA = new Polygon(
         vec(100, 100),
     ]
 );
+
+// [
+//     vec(0, 0),
+//     vec(0, 100),
+//     vec(100, 0),
+// ]
+
 document.onmousemove = (e: MouseEvent) => {
     polyA.pos = vec(e.clientX, e.clientY)
 }

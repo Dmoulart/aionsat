@@ -78,7 +78,6 @@ export class Sat {
             }
             else {
                 const o = projectionA.getOverlap(projectionB);
-                if (o < 1) return false;
                 if (o < overlap) {
                     overlap = o;
                     normal = axis
@@ -101,7 +100,6 @@ export class Sat {
             }
             else {
                 const o = projectionA.getOverlap(projectionB);
-                if (o < 1) return false;
                 if (o < overlap) {
                     overlap = o;
                     normal = axis

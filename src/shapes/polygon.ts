@@ -52,13 +52,13 @@ export class Polygon extends Shape {
     /**
      * Returns the vertices absolute positions of the polygon.
      * 
-     * @returns vertices
+     * @returns vertices absolute positions
      */
     public get vertices(): Vector[] {
         const vertices = []
 
         for (let i = 0; i < this._vertices.length; i++) {
-            vertices.push(this._vertices[i].add(this.pos))
+            vertices.push(this.pos.add(this._vertices[i]))
         }
 
         return vertices
@@ -67,7 +67,7 @@ export class Polygon extends Shape {
     /**
      * Set the vertices relative positions.
      * 
-     * @param vertices
+     * @param vertices relative positions
      */
     public set vertices(vertices: Vector[]) {
         this._vertices = vertices
