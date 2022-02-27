@@ -11,7 +11,7 @@ import { Shape } from "./shapes/shape";
 export class Sat {
 
     /**
-     * Detect the collision between two polygons and return the overlap value as well as the
+     * Detect the collision between two shapes and return the overlap value as well as the
      * collision normal.
      * 
      * @param shape 
@@ -61,8 +61,7 @@ export class Sat {
         const lenB = axesB.length;
 
         let overlap = Number.MAX_VALUE
-        let normal: Vector
-
+        let normal: Vector = Vector.origin
 
         // Project onto each axis of the first shape
 
@@ -88,7 +87,7 @@ export class Sat {
         // Project onto each axis of the second Shape
 
         for (let i = 0; i < lenB; i++) {
-            const axis = axesB[i];
+            const axis = axesB[i]
 
             const projectionA = a.project(axis);
             const projectionB = b.project(axis);
@@ -108,8 +107,8 @@ export class Sat {
 
         // if the smallest penetration normal points into shape b flip it
         // https://community.onelonecoder.com/2020/09/26/separating-axis-theorem-refinements-and-expansion/
-        if ((a.vertices[0].sub(b.vertices[0]).dot(normal) < 0))
-            normal = normal.scale(-1)
+        if (a.vertices[0].sub(b.vertices[0]).dot(normal) < 0)
+            normal = normal.negate()
 
 
         return {
@@ -157,10 +156,11 @@ export class Sat {
         let overlap = Number.MAX_VALUE
         let normal: Vector
 
-        const len = a.axes.length
+        const axes = a.axes;
+        const len = axes.length
 
         for (let i = 0; i < len; i++) {
-            const axis = a.axes[i]
+            const axis = axes[i]
             const projectionA = a.project(axis)
             const projectionB = b.project(axis)
 
@@ -196,13 +196,8 @@ export class Sat {
             }
         }
 
-        if ((a.centroid.sub(b.pos).dot(normal) < 0))
-            normal = normal.scale(-1)
-
-        console.log({
-            normal,
-            overlap
-        })
+        if (a.centroid.sub(b.pos).dot(normal) < 0)
+            normal = normal.negate()
 
         return {
             normal,
@@ -224,7 +219,7 @@ export class Sat {
         if (!response) return false
 
         return {
-            normal: response.normal.scale(-1),
+            normal: response.normal.negate(),
             overlap: response.overlap
         }
     }
