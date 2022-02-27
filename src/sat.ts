@@ -112,6 +112,9 @@ export class Sat {
         if (a.centroid.sub(b.centroid).dot(normal) < 0)
             normal = normal.negate()
 
+        if (overlap > 56000) {
+            console.log('wtf')
+        }
         console.log(a.pos, 'a pos')
         console.log(b.pos, 'b pos')
         console.log(last)
