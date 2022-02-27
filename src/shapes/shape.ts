@@ -6,16 +6,13 @@ import { Vector } from "../math/vector";
  * 
  */
 export abstract class Shape {
-
-    /**
-     * The shape's world position.
-     * 
-     */
-    public pos: Vector
-
-    constructor(pos: Vector) {
-        this.pos = pos
-    }
+    constructor(
+        /**
+         * The shape's world position.
+         * 
+         */
+        public pos: Vector
+    ) { }
 
     /**
      * Project the shape onto a given axis.

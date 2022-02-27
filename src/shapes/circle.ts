@@ -7,17 +7,21 @@ import { Shape } from "./shape";
  * 
  */
 export class Circle extends Shape {
+    constructor(
 
-    /**
-     * The circle's radius.
-     * 
-     */
-    public radius: number;
+        /**
+         * The circle's center.
+         * 
+         */
+        pos: Vector,
 
-    constructor(pos: Vector, radius: number) {
-        super(pos);
-        this.radius = radius;
-    }
+        /**
+         * The circle's radius.
+         * 
+         */
+        public radius: number
+
+    ) { super(pos) }
 
     /**
      * Project the circle onto a given axis.
