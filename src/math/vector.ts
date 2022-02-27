@@ -110,7 +110,7 @@ export class Vector {
      * @returns this
      */
     perp(): Vector {
-        return new Vector(this.y, -this.x)
+        return new Vector(-this.y, this.x)
     }
 }
 

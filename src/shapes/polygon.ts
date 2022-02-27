@@ -33,16 +33,16 @@ export class Polygon extends Shape {
         const vertices = this.vertices
         const len = vertices.length
 
-        let min = Number.MAX_VALUE
+        let min = axis.dot(vertices[0])
         let max = Number.MIN_VALUE
 
-        for (let i = 0; i < len; i++) {
+        for (let i = 1; i < len; i++) {
             const dot = axis.dot(vertices[i])
-            if (dot > max) {
-                max = dot
-            }
             if (dot < min) {
                 min = dot
+            }
+            if (dot > max) {
+                max = dot
             }
         }
 
@@ -55,7 +55,13 @@ export class Polygon extends Shape {
      * @returns vertices
      */
     public get vertices(): Vector[] {
-        return this._vertices.map(vertice => vertice.add(this.pos))
+        const vertices = []
+
+        for (let i = 0; i < this._vertices.length; i++) {
+            vertices.push(this._vertices[i].add(this.pos))
+        }
+
+        return vertices
     }
 
     /**
@@ -80,13 +86,15 @@ export class Polygon extends Shape {
 
         for (let i = 0; i < len; i++) {
             const currentVertex = vertices[i]
+
             const nextVertex = vertices[i + 1] || vertices[0]
             const edge = nextVertex.sub(currentVertex)
-            const perp = new Vector(-edge.y, edge.x)
+
+            const perp = edge.perp()
             const normal = perp.norm()
+
             axes[i] = normal
         }
-
         return axes
     }
 
