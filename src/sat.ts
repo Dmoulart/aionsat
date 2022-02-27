@@ -105,9 +105,8 @@ export class Sat {
         }
 
 
-        // if the smallest penetration normal points into shape b flip it
-        // https://community.onelonecoder.com/2020/09/26/separating-axis-theorem-refinements-and-expansion/
-        if (a.vertices[0].sub(b.vertices[0]).dot(normal) < 0)
+        // If the smallest penetration normal points into shape b flip it
+        if (a.centroid.sub(b.centroid).dot(normal) < 0)
             normal = normal.negate()
 
 
