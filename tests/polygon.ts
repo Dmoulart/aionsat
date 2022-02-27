@@ -1,14 +1,11 @@
 import { Polygon, Sat, Vector } from "../dist/index.js";
 
 var assert = require('assert');
-describe('Shapes', function () {
-
-    describe('polygon', function () {
-        it('cannot be instantiated with less than three vertices', function () {
-            assert.throws(() => {
-                new Polygon(new Vector(0, 0), [new Vector(0, 0), new Vector(0, 0)])
-            }, Error)
-        });
+describe('Polygon', function () {
+    it('cannot be instantiated with less than three vertices', function () {
+        assert.throws(() => {
+            new Polygon(new Vector(0, 0), [new Vector(0, 0), new Vector(0, 0)])
+        }, Error)
     });
 
     describe('vertices', function () {
