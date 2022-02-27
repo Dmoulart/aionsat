@@ -10,9 +10,6 @@ document.body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 ctx.strokeStyle = 'white'
 
-const polygon = new Polygon(new Vector(10, 10), [new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)])
-const axes = polygon.axes
-
 // Instantiate user polygon
 const polyA = new Polygon(
     vec(window.innerWidth / 2, window.innerHeight / 2),
@@ -23,11 +20,6 @@ const polyA = new Polygon(
     ]
 );
 
-// [
-//     vec(0, 0),
-//     vec(0, 100),
-//     vec(100, 0),
-// ]
 
 document.onmousemove = (e: MouseEvent) => {
     polyA.pos = vec(e.clientX, e.clientY)
@@ -50,25 +42,17 @@ const sat = new Sat();
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
 
-    // Let's check collisions one by one
-    let col = null
+    let collision = null
 
-    // if ((col = sat.intersects(circleB, polyA))) {
-    //     resolve(col, circleB)
-    // }
-    // else if ((col = sat.intersects(circleA, polyA))) {
-    //     resolve(col, circleA)
-    // }
-    // Sometimes the polygon/square collision behave weirdly, like the poly would be shaped like the square.
-    // I don't know why
-    if ((col = sat.intersects(square, polyA))) {
-        resolve(col, square)
+    if ((collision = sat.intersects(square, polyA))) {
+        resolve(collision, square)
     }
-
+    if ((collision = sat.intersects(circleA, polyA))) {
+        resolve(collision, circleA)
+    }
     drawPolygon(square)
     drawPolygon(polyA)
-    // drawCircle(circleA)
-    // drawCircle(circleB)
+    drawCircle(circleA)
 
     requestAnimationFrame(loop)
 

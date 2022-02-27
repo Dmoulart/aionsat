@@ -59,7 +59,7 @@ export class Circle extends Shape {
 
 
         let vertexIndex = -1
-        let minDistance = Number.MAX_VALUE
+        let minDistance = Infinity
 
 
         for (let i = 0; i < len; i++) {

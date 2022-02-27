@@ -33,10 +33,11 @@ export class Polygon extends Shape {
         const vertices = this.vertices
         const len = vertices.length
 
-        let min = axis.dot(vertices[0])
-        let max = Number.MIN_VALUE
+        // Use infinity because Number.MAX_VALUE produces unexpected results.. 
+        let min = Infinity
+        let max = -Infinity
 
-        for (let i = 1; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             const dot = axis.dot(vertices[i])
             if (dot < min) {
                 min = dot

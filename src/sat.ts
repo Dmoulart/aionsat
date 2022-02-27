@@ -35,9 +35,8 @@ export class Sat {
         if (a instanceof Circle && b instanceof Polygon)
             return this.circleIntersectsPolygon(a, b)
 
-
+        
         console.warn(`Unsupported collision detection between ${a.constructor.name} and ${b.constructor.name}`, a, b)
-
 
         return false
     }
@@ -60,10 +59,8 @@ export class Sat {
         const lenA = axesA.length;
         const lenB = axesB.length;
 
-        let overlap = Number.MAX_VALUE
+        let overlap = Number.MAX_VALUE;
         let normal: Vector = Vector.origin
-
-        let last
 
         // Project onto each axis of the first shape
 
@@ -81,7 +78,6 @@ export class Sat {
                 if (o < overlap) {
                     overlap = o;
                     normal = axis
-                    last = 'a'
                 }
             }
         }
@@ -103,7 +99,6 @@ export class Sat {
                 if (o < overlap) {
                     overlap = o;
                     normal = axis
-                    last = 'b'
                 }
             }
         }
@@ -111,15 +106,6 @@ export class Sat {
         // If the smallest penetration normal points into shape b flip it
         if (a.centroid.sub(b.centroid).dot(normal) < 0)
             normal = normal.negate()
-
-        if (overlap > 56000) {
-            console.log('wtf')
-        }
-        console.log(a.pos, 'a pos')
-        console.log(b.pos, 'b pos')
-        console.log(last)
-        console.log(normal)
-        console.log('overlap', overlap)
 
         return {
             normal,
@@ -163,8 +149,8 @@ export class Sat {
      * @returns collision response
      */
     public polygonIntersectsCircle(a: Polygon, b: Circle): false | { normal: Vector; overlap: number; } {
-        let overlap = Number.MAX_VALUE
-        let normal: Vector
+        let overlap: number = Number.MAX_VALUE;
+        let normal: Vector = Vector.origin
 
         const axes = a.axes;
         const len = axes.length
