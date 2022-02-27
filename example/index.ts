@@ -10,11 +10,7 @@ document.body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 ctx.strokeStyle = 'white'
 
-// Mouse position
-let mousePosition = vec(0, 0)
-
-
-// Instantiate Polygons
+// Instantiate user polygon
 const polyA = new Polygon(
     vec(window.innerWidth / 2, window.innerHeight / 2),
     [
@@ -23,62 +19,48 @@ const polyA = new Polygon(
         vec(100, 100),
     ]
 );
-
-const verticesB = [
-    vec(0, 0),
-    vec(100, 0),
-    vec(100, 100),
-    vec(0, 100),
-]
-
-const polyB = new Polygon(
-    mousePosition,
-    verticesB
-);
-
-const circleA = new Circle(mousePosition, 100)
-
-const circleB = new Circle(vec(400, 200), 100)
-
 document.onmousemove = (e: MouseEvent) => {
-
-    mousePosition = vec(e.clientX, e.clientY)
-    // circleA.pos = mousePosition
-    polyB.pos = mousePosition
+    polyA.pos = vec(e.clientX, e.clientY)
 }
 
+// Instantiate other shapes
+const square = new Polygon(
+    vec(200, 200),
+    [
+        vec(0, 0),
+        vec(100, 0),
+        vec(100, 100),
+        vec(0, 100),
+    ]
+);
+const circleA = new Circle(vec(200, 200), 100)
+const circleB = new Circle(vec(400, 200), 20)
 const sat = new Sat();
 
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
 
+    // Let's check collisions one by one
+    let col = null
 
-    // const collision = sat.intersects(polyA, polyB)
-
-    drawPolygon(polyB)
-    // drawPolygon(polyB, collision ? 'red' : 'green')
-
-    const collision = sat.intersects(circleB, polyB)
-
-    if (collision) {
-        resolve(collision, circleB)
+    if ((col = sat.intersects(circleB, polyA))) {
+        resolve(col, circleB)
+    }
+    else if ((col = sat.intersects(circleA, polyA))) {
+        resolve(col, circleA)
+    }
+    // Sometimes the polygon/square collision behave weirdly, like the poly would be shaped like the square.
+    // I don't know why
+    else if ((col = sat.intersects(square, polyA))) {
+        resolve(col, square)
     }
 
-    {
-        const collision = sat.intersects(polyA, polyB)
-
-        if (collision) {
-            resolve(collision, polyA)
-        }
-    }
-
-
+    drawPolygon(square)
     drawPolygon(polyA)
     drawCircle(circleA)
     drawCircle(circleB)
 
     requestAnimationFrame(loop)
-
 
 })()
 
@@ -108,46 +90,3 @@ function drawCircle(circle: Circle, color = "white") {
     ctx.closePath()
 }
 
-function drawAxes(poly: Polygon) {
-    ctx.strokeStyle = 'white'
-    poly.axes.forEach(axis => {
-        ctx.strokeRect(axis.x, axis.y, 20, 20)
-    })
-}
-
-function drawProjections(polyA: Polygon, color: string) {
-    ctx.strokeStyle = color
-    polyA.axes.forEach((axis, i) => {
-        const p = polyA.project(axis)
-        //console.log(p.min, p.max)
-        ctx.beginPath()
-        ctx.moveTo(400 + p.min / 100, 200 + i * 200)
-        ctx.lineTo(400 + p.max / 100, 200 + i * 200)
-        ctx.stroke()
-        ctx.closePath()
-    })
-}
-// /**
-//      * Creates a standard polygon shape with the requested number of sides
-//      * @param {int} numOfSides 
-//      * @param {number} radius 
-//      */
-//     static CreatePolygon(numOfSides = 3, radius = 100)
-// {
-//     numOfSides = Math.round(numOfSides);
-//     if (numOfSides < 3)
-//         throw "You need at least 3 sides for a polygon"
-
-//     var poly = new SATPolygon();
-//     // figure out the angles required
-//     var rotangle = (Math.PI * 2) / numOfSides;
-//     var angle = 0;
-//     // loop through and generate each point
-//     for (var i = 0; i < numOfSides; i++) {
-//         angle = (i * rotangle) + ((Math.PI - rotangle) * 0.5);
-//         let pt = new SATPoint(Math.cos(angle) * radius,
-//             Math.sin(angle) * radius);
-//         poly.vertices.push(pt);
-//     }
-//     return poly;
-// }
