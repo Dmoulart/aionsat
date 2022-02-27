@@ -63,6 +63,8 @@ export class Sat {
         let overlap = Number.MAX_VALUE
         let normal: Vector = Vector.origin
 
+        let last
+
         // Project onto each axis of the first shape
 
         for (let i = 0; i < lenA; i++) {
@@ -76,9 +78,11 @@ export class Sat {
             }
             else {
                 const o = projectionA.getOverlap(projectionB);
+                if (o < 1) return false;
                 if (o < overlap) {
                     overlap = o;
                     normal = axis
+                    last = 'a'
                 }
             }
         }
@@ -97,18 +101,24 @@ export class Sat {
             }
             else {
                 const o = projectionA.getOverlap(projectionB);
+                if (o < 1) return false;
                 if (o < overlap) {
                     overlap = o;
                     normal = axis
+                    last = 'b'
                 }
             }
         }
-
 
         // If the smallest penetration normal points into shape b flip it
         if (a.centroid.sub(b.centroid).dot(normal) < 0)
             normal = normal.negate()
 
+        console.log(a.pos, 'a pos')
+        console.log(b.pos, 'b pos')
+        console.log(last)
+        console.log(normal)
+        console.log('overlap', overlap)
 
         return {
             normal,

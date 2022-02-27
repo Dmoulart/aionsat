@@ -46,22 +46,22 @@ const sat = new Sat();
     // Let's check collisions one by one
     let col = null
 
-    if ((col = sat.intersects(circleB, polyA))) {
-        resolve(col, circleB)
-    }
-    else if ((col = sat.intersects(circleA, polyA))) {
-        resolve(col, circleA)
-    }
+    // if ((col = sat.intersects(circleB, polyA))) {
+    //     resolve(col, circleB)
+    // }
+    // else if ((col = sat.intersects(circleA, polyA))) {
+    //     resolve(col, circleA)
+    // }
     // Sometimes the polygon/square collision behave weirdly, like the poly would be shaped like the square.
     // I don't know why
-    else if ((col = sat.intersects(square, polyA))) {
+    if ((col = sat.intersects(square, polyA))) {
         resolve(col, square)
     }
 
     drawPolygon(square)
     drawPolygon(polyA)
-    drawCircle(circleA)
-    drawCircle(circleB)
+    // drawCircle(circleA)
+    // drawCircle(circleB)
 
     requestAnimationFrame(loop)
 

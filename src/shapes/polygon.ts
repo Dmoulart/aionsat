@@ -87,7 +87,7 @@ export class Polygon extends Shape {
         for (let i = 0; i < len; i++) {
             const currentVertex = vertices[i]
 
-            const nextVertex = vertices[i + 1] || vertices[0]
+            const nextVertex = vertices[(i + 1) % len]
             const edge = nextVertex.sub(currentVertex)
 
             const perp = edge.perp()
