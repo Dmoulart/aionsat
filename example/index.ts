@@ -18,9 +18,9 @@ let mousePosition = vec(0, 0)
 const polyA = new Polygon(
     vec(window.innerWidth / 2, window.innerHeight / 2),
     [
+        vec(0, 0),
+        vec(100, 0),
         vec(100, 100),
-        vec(100, 200),
-        vec(200, 100),
     ]
 );
 
@@ -64,7 +64,16 @@ const sat = new Sat();
         resolve(collision, circleB)
     }
 
+    {
+        const collision = sat.intersects(polyA, polyB)
 
+        if (collision) {
+            resolve(collision, polyA)
+        }
+    }
+
+
+    drawPolygon(polyA)
     drawCircle(circleA)
     drawCircle(circleB)
 
