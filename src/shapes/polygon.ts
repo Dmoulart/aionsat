@@ -18,7 +18,7 @@ export class Polygon extends Shape {
     constructor(pos: Vector, vertices: Vector[] = []) {
         super(pos)
         if (vertices.length < 3) {
-            console.error(`Polygon has been instanciated with less than 3 vertices.`)
+            throw new Error(`Polygon has been instanciated with less than 3 vertices.`)
         }
         this._vertices = vertices
     }

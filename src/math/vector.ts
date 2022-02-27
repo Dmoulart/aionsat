@@ -92,7 +92,13 @@ export class Vector {
      */
     norm(): Vector {
         const mag = this.mag()
-        return new Vector(this.x / mag, this.y / mag)
+        if (mag > 0) {
+            return new Vector(this.x / mag, this.y / mag)
+        }
+        else {
+            return new Vector(0, 1)
+        }
+
     }
 
     /**

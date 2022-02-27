@@ -10,6 +10,9 @@ document.body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 ctx.strokeStyle = 'white'
 
+const polygon = new Polygon(new Vector(10, 10), [new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)])
+const axes = polygon.axes
+
 // Instantiate user polygon
 const polyA = new Polygon(
     vec(window.innerWidth / 2, window.innerHeight / 2),
