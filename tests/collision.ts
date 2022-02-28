@@ -169,11 +169,11 @@ describe('Collisions', function () {
         it('should not intersects circle', function () {
             const circleA = new Circle(new Vector(70, 0), 20)
 
-            const circleB = new Circle(new Vector(100, 0), 20)
+            const circleB = new Circle(new Vector(120, 0), 20)
 
             const collision = new Sat().intersects(circleA, circleB)
 
-            assert(collision)
+            assert(!collision)
         });
 
         it('should intersects polygon', function () {

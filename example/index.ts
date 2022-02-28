@@ -46,6 +46,7 @@ const squareB = new Polygon(
 );
 document.onmousemove = (e: MouseEvent) => {
     square.pos = vec(e.clientX, e.clientY)
+    // circleA.pos = vec(e.clientX, e.clientY)
 }
 
 const circleA = new Circle(vec(200, 200), 20)
@@ -67,7 +68,7 @@ const sat = new Sat();
 
 
 
-    const collision = sat.intersects(square, squareB)
+    const collision = sat.intersects(circleA, circleB)
     // if (collision) {
     //     //resolve(collision, circleA)
     //     drawCircle(circleA, collision.aInB ? "red" : "white")
@@ -79,8 +80,8 @@ const sat = new Sat();
     drawPolygon(square)
     drawPolygon(squareB, collision && collision.bInA ? "red" : "white")
 
-    //drawCircle(circleA, collision)
-    //drawCircle(circleB)
+    drawCircle(circleA, collision ? "red" : "white")
+    drawCircle(circleB)
 
     requestAnimationFrame(loop)
 
