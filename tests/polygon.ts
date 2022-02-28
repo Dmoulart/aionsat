@@ -46,9 +46,6 @@ describe('Polygon', function () {
             assert.equal(centroid.x, 5)
             assert.equal(centroid.y, 5)
         });
-    });
-
-    describe('centroid', function () {
         it('should be the correct value for a triangle', function () {
             const triangle = new Polygon(new Vector(0, 0), [
                 new Vector(0, 0),
@@ -62,5 +59,4 @@ describe('Polygon', function () {
             assert.equal(centroid.y, 33)
         });
     });
-
 });
