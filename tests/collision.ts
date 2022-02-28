@@ -219,7 +219,7 @@ describe('Collisions', function () {
         it('should not be inside circle', function () {
             const circleA = new Circle(new Vector(0, 0), 20)
 
-            const circleB = new Circle(new Vector(15, 15), 5)
+            const circleB = new Circle(new Vector(15, 15), 10)
 
             const collision = new Sat().intersects(circleA, circleB)
 
