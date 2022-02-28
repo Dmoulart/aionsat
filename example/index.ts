@@ -1,4 +1,5 @@
 import { Polygon, Sat, vec, Vector } from '../dist'
+import { Collision } from '../dist/sat'
 import { Circle } from '../dist/shapes/circle'
 import { Shape } from '../dist/shapes/shape'
 
@@ -19,11 +20,10 @@ const polyA = new Polygon(
         vec(100, 100),
     ]
 );
-
-
 document.onmousemove = (e: MouseEvent) => {
-    polyA.pos = vec(e.clientX, e.clientY)
+    //polyA.pos = vec(e.clientX, e.clientY)
 }
+
 
 // Instantiate other shapes
 const square = new Polygon(
@@ -35,24 +35,52 @@ const square = new Polygon(
         vec(0, 100),
     ]
 );
-const circleA = new Circle(vec(200, 200), 100)
-const circleB = new Circle(vec(400, 200), 20)
+const squareB = new Polygon(
+    vec(200, 200),
+    [
+        vec(0, 0),
+        vec(10, 0),
+        vec(10, 10),
+        vec(0, 10),
+    ]
+);
+document.onmousemove = (e: MouseEvent) => {
+    square.pos = vec(e.clientX, e.clientY)
+}
+
+const circleA = new Circle(vec(200, 200), 20)
+
+const circleB = new Circle(vec(400, 200), 120)
+
 const sat = new Sat();
 
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
 
-    let collision = null
 
-    if ((collision = sat.intersects(square, polyA))) {
-        resolve(collision, square)
-    }
-    if ((collision = sat.intersects(circleA, polyA))) {
-        resolve(collision, circleA)
-    }
+    // if ((collision = sat.intersects(square, polyA))) {
+    //     resolve(collision, square)
+    // }
+    // if ((collision = sat.intersects(circleA, polyA))) {
+    //     resolve(collision, circleA)
+    // }
+
+
+
+    const collision = sat.intersects(square, squareB)
+    // if (collision) {
+    //     //resolve(collision, circleA)
+    //     drawCircle(circleA, collision.aInB ? "red" : "white")
+    // }
+    // else {
+    //     drawCircle(circleA)
+    // }
+
     drawPolygon(square)
-    drawPolygon(polyA)
-    drawCircle(circleA)
+    drawPolygon(squareB, collision && collision.bInA ? "red" : "white")
+
+    //drawCircle(circleA, collision)
+    //drawCircle(circleB)
 
     requestAnimationFrame(loop)
 

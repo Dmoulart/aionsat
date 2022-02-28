@@ -4,6 +4,22 @@ import { Polygon } from "./shapes/polygon";
 import { Shape } from "./shapes/shape";
 
 /**
+ * The collision data returned by the SAT intersection methods.
+ * It consists of :
+ * - normal : it is the collision axis
+ * - overlap : the penetration coefficient
+ * - aInB : true if the shape A is fully inside the shape B
+ * - bInA: true if the shape B is fully inside the shape A
+ * 
+ */
+export type Collision = {
+    normal: Vector,
+    overlap: number
+    aInB: boolean
+    bInA: boolean
+}
+
+/**
  * An implementation of the Separating Axis Theorem, greatly inspired from the dyn4j blog post.
  * https://dyn4j.org/2010/01/sat/
  * 
@@ -18,10 +34,7 @@ export class Sat {
      * @param otherShape
      * @returns collision response 
      */
-    public intersects(a: Shape, b: Shape): {
-        normal: Vector,
-        overlap: number
-    } | false {
+    public intersects(a: Shape, b: Shape): Collision | false {
 
         if (a instanceof Polygon && b instanceof Polygon)
             return this.polygonIntersectsPolgon(a, b)
@@ -35,7 +48,6 @@ export class Sat {
         if (a instanceof Circle && b instanceof Polygon)
             return this.circleIntersectsPolygon(a, b)
 
-        
         console.warn(`Unsupported collision detection between ${a.constructor.name} and ${b.constructor.name}`, a, b)
 
         return false
@@ -49,26 +61,26 @@ export class Sat {
      * @param polyB
      * @returns collision response 
      */
-    public polygonIntersectsPolgon(a: Polygon, b: Polygon): {
-        normal: Vector,
-        overlap: number
-    } | false {
-        const axesA = a.axes;
-        const axesB = b.axes;
+    public polygonIntersectsPolgon(a: Polygon, b: Polygon): Collision | false {
+        const axesA = a.axes
+        const axesB = b.axes
 
-        const lenA = axesA.length;
-        const lenB = axesB.length;
+        const lenA = axesA.length
+        const lenB = axesB.length
 
-        let overlap = Number.MAX_VALUE;
+        let overlap = Number.MAX_VALUE
         let normal: Vector = Vector.origin
+
+        let aInB = true
+        let bInA = true
 
         // Project onto each axis of the first shape
 
         for (let i = 0; i < lenA; i++) {
             const axis = axesA[i];
 
-            const projectionA = a.project(axis);
-            const projectionB = b.project(axis);
+            const projectionA = a.project(axis)
+            const projectionB = b.project(axis)
 
             if (!projectionA.overlap(projectionB)) {
                 return false;
@@ -79,6 +91,15 @@ export class Sat {
                     overlap = o;
                     normal = axis
                 }
+
+                if (!(projectionA.min < projectionB.min && projectionA.max >= projectionB.max)) {
+                    aInB = false
+                }
+
+                if (!(projectionB.min >= projectionA.min && projectionB.max <= projectionA.max)) {
+                    bInA = false
+                }
+
             }
         }
 
@@ -88,8 +109,8 @@ export class Sat {
         for (let i = 0; i < lenB; i++) {
             const axis = axesB[i]
 
-            const projectionA = a.project(axis);
-            const projectionB = b.project(axis);
+            const projectionA = a.project(axis)
+            const projectionB = b.project(axis)
 
             if (!projectionA.overlap(projectionB)) {
                 return false;
@@ -100,6 +121,15 @@ export class Sat {
                     overlap = o;
                     normal = axis
                 }
+
+                if (!(projectionA.min < projectionB.min && projectionA.max >= projectionB.max)) {
+                    aInB = false
+                }
+
+                if (!(projectionB.min >= projectionA.min && projectionB.max <= projectionA.max)) {
+                    bInA = false
+                }
+
             }
         }
 
@@ -109,7 +139,9 @@ export class Sat {
 
         return {
             normal,
-            overlap
+            overlap,
+            aInB,
+            bInA
         }
     }
 
@@ -122,20 +154,32 @@ export class Sat {
      * @param b other circle
      * @returns collision response
      */
-    public circleIntersectsCircle(a: Circle, b: Circle): false | { normal: Vector; overlap: number; } {
+    public circleIntersectsCircle(a: Circle, b: Circle): Collision | false {
         const distance = a.pos.sub(b.pos);
-        const distanceSquared = distance.dot(distance);
+        const distanceSquared = distance.dot(distance)
 
-        const radiusSum = a.radius + b.radius;
+        const radiusSum = a.radius + b.radius
 
-        if (distanceSquared > radiusSum * radiusSum) return false;
+        if (distanceSquared > radiusSum * radiusSum) return false
+
+        const distanceSquareRoot = Math.sqrt(distanceSquared)
+
+        const normal = new Vector(
+            distance.x / distanceSquareRoot,
+            distance.y / distanceSquareRoot
+        )
+
+        const overlap = radiusSum - distanceSquareRoot
+
+
+        const aInB = a.radius <= b.radius && distanceSquareRoot <= b.radius - a.radius
+        const bInA = b.radius <= a.radius && distanceSquareRoot <= a.radius - b.radius
 
         return {
-            normal: new Vector(
-                distance.x / Math.sqrt(distanceSquared),
-                distance.y / Math.sqrt(distanceSquared)
-            ),
-            overlap: radiusSum - Math.sqrt(distanceSquared)
+            normal,
+            overlap,
+            aInB: aInB,
+            bInA: bInA,
         }
     }
 
@@ -148,7 +192,7 @@ export class Sat {
      * @param b circle
      * @returns collision response
      */
-    public polygonIntersectsCircle(a: Polygon, b: Circle): false | { normal: Vector; overlap: number; } {
+    public polygonIntersectsCircle(a: Polygon, b: Circle): Collision | false {
         let overlap: number = Number.MAX_VALUE;
         let normal: Vector = Vector.origin
 
@@ -197,7 +241,9 @@ export class Sat {
 
         return {
             normal,
-            overlap
+            overlap,
+            aInB: false,
+            bInA: false
         }
     }
 
@@ -209,14 +255,16 @@ export class Sat {
      * @param b polygon
      * @returns collision response
      */
-    public circleIntersectsPolygon(a: Circle, b: Polygon): false | { normal: Vector; overlap: number; } {
+    public circleIntersectsPolygon(a: Circle, b: Polygon): Collision | false {
         const response = this.polygonIntersectsCircle(b, a)
 
         if (!response) return false
 
         return {
             normal: response.normal.negate(),
-            overlap: response.overlap
+            overlap: response.overlap,
+            aInB: response.bInA,
+            bInA: response.aInB
         }
     }
 }

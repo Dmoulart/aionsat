@@ -13,7 +13,7 @@ export class Circle extends Shape {
          * The circle's center.
          * 
          */
-        pos: Vector,
+        public pos: Vector,
 
         /**
          * The circle's radius.
@@ -57,10 +57,8 @@ export class Circle extends Shape {
         const vertices = polygon.vertices
         const len = vertices.length
 
-
         let vertexIndex = -1
         let minDistance = Infinity
-
 
         for (let i = 0; i < len; i++) {
 
@@ -73,5 +71,41 @@ export class Circle extends Shape {
         }
 
         return { minDistance, vertexIndex }
+    }
+
+    /**
+     * Returns true if this circle contains another circle. We can provide a calculated distance
+     * square root to improve performance.
+     * 
+     * @param other 
+     * @param distanceSquareRoot 
+     * @returns contains other circle
+     */
+    public containsCircle(other: Circle, distanceSquareRoot?: number): boolean {
+        if (distanceSquareRoot === undefined) {
+            const distance = this.pos.sub(other.pos);
+            const distanceSquared = distance.dot(distance);
+            distanceSquareRoot = Math.sqrt(distanceSquared);
+        }
+
+        return this.radius <= other.radius && distanceSquareRoot <= other.radius - this.radius;
+    }
+
+    /**
+     * Returns true if this circle is contained inside another circle. We can provide a calculated distance
+     * square root to improve performance.
+     * 
+     * @param other 
+     * @param distanceSquareRoot 
+     * @returns contains other circle
+     */
+    public isContainedInsideCircle(other: Circle, distanceSquareRoot?: number): boolean {
+        if (distanceSquareRoot === undefined) {
+            const distance = this.pos.sub(other.pos);
+            const distanceSquared = distance.dot(distance);
+            distanceSquareRoot = Math.sqrt(distanceSquared);
+        }
+
+        return other.radius <= this.radius && distanceSquareRoot <= this.radius - other.radius
     }
 }

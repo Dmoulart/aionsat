@@ -1,4 +1,5 @@
 import { Polygon, Sat, Vector } from "../dist/index.js";
+import { Collision } from "../dist/sat.js";
 import { Circle } from "../dist/shapes/circle.js";
 
 var assert = require('assert');
@@ -113,6 +114,45 @@ describe('Collisions', function () {
             assert(!collision)
         });
 
+        it('should be fully inside square', function () {
+            const squareA = new Polygon(new Vector(20, 20), [
+                new Vector(0, 0),
+                new Vector(40, 0),
+                new Vector(40, 40),
+                new Vector(0, 40)
+            ])
+
+            const squareB = new Polygon(new Vector(30, 30), [
+                new Vector(0, 0),
+                new Vector(10, 0),
+                new Vector(10, 10),
+                new Vector(0, 10)
+            ])
+
+            const collision = new Sat().intersects(squareA, squareB)
+
+            assert(collision && collision.aInB)
+        });
+
+        it('should not be fully inside square', function () {
+            const squareA = new Polygon(new Vector(20, 20), [
+                new Vector(0, 0),
+                new Vector(40, 0),
+                new Vector(40, 40),
+                new Vector(0, 40)
+            ])
+
+            const squareB = new Polygon(new Vector(55, 55), [
+                new Vector(0, 0),
+                new Vector(10, 0),
+                new Vector(10, 10),
+                new Vector(0, 10)
+            ])
+
+            const collision = new Sat().intersects(squareA, squareB)
+
+            assert(collision && !collision.aInB)
+        });
     })
 
     describe('Circle', function () {
@@ -164,6 +204,26 @@ describe('Collisions', function () {
             const collision = new Sat().intersects(circle, square)
 
             assert(!collision)
+        });
+
+        it('should be inside circle', function () {
+            const circleA = new Circle(new Vector(0, 0), 20)
+
+            const circleB = new Circle(new Vector(5, 5), 2)
+
+            const collision = new Sat().intersects(circleA, circleB)
+
+            assert(collision && collision.bInA)
+        });
+
+        it('should not be inside circle', function () {
+            const circleA = new Circle(new Vector(0, 0), 20)
+
+            const circleB = new Circle(new Vector(15, 15), 5)
+
+            const collision = new Sat().intersects(circleA, circleB)
+
+            assert(collision && !collision.bInA)
         });
     })
 });
