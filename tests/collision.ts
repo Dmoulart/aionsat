@@ -135,5 +135,35 @@ describe('Collisions', function () {
 
             assert(collision)
         });
+
+        it('should intersects polygon', function () {
+            const circle = new Circle(new Vector(0, 0), 20)
+
+            const square = new Polygon(new Vector(15, 0), [
+                new Vector(0, 0),
+                new Vector(40, 0),
+                new Vector(40, 40),
+                new Vector(0, 40)
+            ])
+
+            const collision = new Sat().intersects(circle, square)
+
+            assert(collision)
+        });
+
+        it('should not intersects polygon', function () {
+            const circle = new Circle(new Vector(0, 0), 20)
+
+            const square = new Polygon(new Vector(25, 0), [
+                new Vector(0, 0),
+                new Vector(40, 0),
+                new Vector(40, 40),
+                new Vector(0, 40)
+            ])
+
+            const collision = new Sat().intersects(circle, square)
+
+            assert(!collision)
+        });
     })
 });

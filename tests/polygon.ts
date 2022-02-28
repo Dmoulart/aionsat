@@ -16,6 +16,7 @@ describe('Polygon', function () {
 
             assert.equal(vertices[0].x, 10)
             assert.equal(vertices[0].y, 10)
+
             assert.equal(vertices[1].x, 20)
             assert.equal(vertices[1].y, 10)
         });
@@ -38,8 +39,8 @@ describe('Polygon', function () {
                 new Vector(0, 0),
                 new Vector(10, 0),
                 new Vector(10, 10),
-                new Vector(0, 10)]
-            )
+                new Vector(0, 10)
+            ])
 
             const centroid = rectangle.centroid
 
