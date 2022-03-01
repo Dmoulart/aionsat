@@ -73,7 +73,7 @@ export class Sat {
 
         let aInB = true
         let bInA = true
-
+        let noContainment = false
         // Project onto each axis of the first shape
 
         for (let i = 0; i < lenA; i++) {
@@ -92,14 +92,18 @@ export class Sat {
                     normal = axis
                 }
 
-                if (!(projectionA.min < projectionB.min && projectionA.max >= projectionB.max)) {
-                    aInB = false
-                }
-
-                if (!(projectionB.min >= projectionA.min && projectionB.max <= projectionA.max)) {
+                if ((projectionA.min < projectionB.min && projectionA.max > projectionB.max)) {
+                    aInB = true
                     bInA = false
                 }
-
+                if ((projectionB.min > projectionA.min && projectionB.max < projectionA.max)) {
+                    bInA = true
+                    aInB = false
+                }
+                // If one axis prove there is no containment then we can stop checking
+                else if (!noContainment) {
+                    noContainment = true
+                }
             }
         }
 
@@ -122,15 +126,26 @@ export class Sat {
                     normal = axis
                 }
 
-                if (!(projectionA.min < projectionB.min && projectionA.max >= projectionB.max)) {
-                    aInB = false
-                }
-
-                if (!(projectionB.min >= projectionA.min && projectionB.max <= projectionA.max)) {
+                if ((projectionA.min < projectionB.min && projectionA.max > projectionB.max)) {
+                    aInB = true
                     bInA = false
                 }
+                if ((projectionB.min > projectionA.min && projectionB.max < projectionA.max)) {
+                    bInA = true
+                    aInB = false
+                }
+                // If one axis prove there is no containment then we can stop checking
+                else if (!noContainment) {
+                    noContainment = true
+                }
 
+                console.log(projectionA, projectionB)
             }
+        }
+
+        if (noContainment) {
+            aInB = false
+            bInA = false
         }
 
         // If the smallest penetration normal points into shape b flip it

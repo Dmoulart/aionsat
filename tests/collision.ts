@@ -114,7 +114,7 @@ describe('Collisions', function () {
             assert(!collision)
         });
 
-        it('should be fully inside square', function () {
+        it('should be fully inside square and square should not be fully inside polygon', function () {
             const squareA = new Polygon(new Vector(20, 20), [
                 new Vector(0, 0),
                 new Vector(40, 0),
@@ -131,10 +131,10 @@ describe('Collisions', function () {
 
             const collision = new Sat().intersects(squareA, squareB)
 
-            assert(collision && collision.aInB)
+            assert(collision && collision.aInB && !collision.bInA)
         });
 
-        it('should not be fully inside square', function () {
+        it('should not be fully inside square and square should not be fully inside polygon', function () {
             const squareA = new Polygon(new Vector(20, 20), [
                 new Vector(0, 0),
                 new Vector(40, 0),
@@ -151,7 +151,7 @@ describe('Collisions', function () {
 
             const collision = new Sat().intersects(squareA, squareB)
 
-            assert(collision && !collision.aInB)
+            assert(collision && !collision.aInB && !collision.bInA)
         });
     })
 
