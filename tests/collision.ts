@@ -131,7 +131,7 @@ describe('Collisions', function () {
 
             const collision = new Sat().intersects(squareA, squareB)
 
-            assert(collision && collision.aInB && !collision.bInA)
+            assert(collision && !collision.aInB && collision.bInA)
         });
 
         it('should not be fully inside square and square should not be fully inside polygon', function () {

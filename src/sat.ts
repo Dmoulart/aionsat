@@ -74,6 +74,8 @@ export class Sat {
         let aInB = true
         let bInA = true
         let noContainment = false
+
+
         // Project onto each axis of the first shape
 
         for (let i = 0; i < lenA; i++) {
@@ -91,6 +93,8 @@ export class Sat {
                     overlap = o;
                     normal = axis
                 }
+                
+                if (noContainment) continue
 
                 if ((projectionA.min < projectionB.min && projectionA.max > projectionB.max)) {
                     aInB = true
@@ -108,7 +112,7 @@ export class Sat {
         }
 
 
-        // Project onto each axis of the second Shape
+        // Project onto each axis of the second shape
 
         for (let i = 0; i < lenB; i++) {
             const axis = axesB[i]
@@ -126,6 +130,8 @@ export class Sat {
                     normal = axis
                 }
 
+                if (noContainment) continue
+
                 if ((projectionA.min < projectionB.min && projectionA.max > projectionB.max)) {
                     aInB = true
                     bInA = false
@@ -138,8 +144,6 @@ export class Sat {
                 else if (!noContainment) {
                     noContainment = true
                 }
-
-                console.log(projectionA, projectionB)
             }
         }
 
