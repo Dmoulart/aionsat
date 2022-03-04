@@ -20,10 +20,6 @@ const polyA = new Polygon(
         vec(100, 100),
     ]
 );
-document.onmousemove = (e: MouseEvent) => {
-    //polyA.pos = vec(e.clientX, e.clientY)
-}
-
 
 // Instantiate other shapes
 const square = new Polygon(
@@ -31,7 +27,7 @@ const square = new Polygon(
     [
         vec(0, 0),
         vec(100, 0),
-        vec(100, 100),
+        //vec(10, 10),
         vec(0, 100),
     ]
 );
@@ -49,8 +45,10 @@ document.onmousemove = (e: MouseEvent) => {
     squareB.pos = vec(e.clientX, e.clientY)
 }
 
-const circleA = new Circle(vec(200, 200), 20)
-
+const circleA = new Circle(vec(200, 200), 10)
+document.onmousemove = (e: MouseEvent) => {
+    square.pos = vec(e.clientX, e.clientY)
+}
 const circleB = new Circle(vec(400, 200), 120)
 
 const sat = new Sat();
@@ -58,33 +56,13 @@ const sat = new Sat();
 (function loop() {
     ctx.clearRect(0, 0, innerWidth, innerHeight)
 
-
-    // if ((collision = sat.intersects(square, polyA))) {
-    //     resolve(collision, square)
-    // }
-    // if ((collision = sat.intersects(circleA, polyA))) {
-    //     resolve(collision, circleA)
-    // }
-
-
-
-    // const collision = sat.intersects(circleA, circleB)
-
-    // if (collision) {
-    //     //resolve(collision, circleA)
-    //     drawCircle(circleA, collision.aInB ? "red" : "white")
-    // }
-    // else {
-    //     drawCircle(circleA)
-    // }
-
-    const collision = sat.intersects(square, squareB)
+    const collision = sat.intersects(square, circleA)
 
     drawPolygon(square)
-    drawPolygon(squareB, collision && collision.bInA ? "red" : "white")
+    //drawPolygon(squareB, collision && collision.bInA ? "red" : "white")
 
-    console.log(collision)
-    // drawCircle(circleA)
+    // console.log(collision)
+    drawCircle(circleA, collision && collision.bInA ? "red" : "white")
     // drawCircle(circleB, collision && collision.aInB ? "red" : "white")
 
     requestAnimationFrame(loop)

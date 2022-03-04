@@ -93,7 +93,7 @@ export class Sat {
                     overlap = o;
                     normal = axis
                 }
-                
+
                 if (noContainment) continue
 
                 if ((projectionA.min < projectionB.min && projectionA.max > projectionB.max)) {
@@ -218,6 +218,9 @@ export class Sat {
         const axes = a.axes;
         const len = axes.length
 
+        let aInB: boolean;
+        let bInA: boolean;
+
         for (let i = 0; i < len; i++) {
             const axis = axes[i]
             const projectionA = a.project(axis)
@@ -258,11 +261,16 @@ export class Sat {
         if (a.centroid.sub(b.pos).dot(normal) < 0)
             normal = normal.negate()
 
+        aInB = a.isInsideCircle(b)
+
+        // This method is not implemented for now
+        bInA = false
+
         return {
             normal,
             overlap,
-            aInB: false,
-            bInA: false
+            aInB,
+            bInA
         }
     }
 

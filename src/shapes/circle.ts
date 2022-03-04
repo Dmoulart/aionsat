@@ -108,4 +108,51 @@ export class Circle extends Shape {
 
         return other.radius <= this.radius && distanceSquareRoot <= this.radius - other.radius
     }
+
+    /**
+     * Returns true if this circle contains the specified point.
+     * 
+     * @param point 
+     * @returns contains point
+     */
+    public containsPoint(point: Vector): boolean {
+        const distance = point.sub(this.pos);
+        const distanceSquared = distance.dot(distance);
+        return distanceSquared <= this.radius * this.radius;
+    }
+
+    /**
+     * THIS METHOD IS NOT IMPLEMENTED. Returns true if this circle is contained y the speicified polygon
+     * @warning NOT_IMPLEMENTED
+     * @param polygon
+     * @returns contains point
+     */
+    public isInsidePolygon(polygon: Polygon): any {
+        // const vertices = polygon.vertices
+        // const len = vertices.length
+
+        // const center = this.pos
+
+        // let min = Infinity
+        // let max = -Infinity
+
+        // let isInside = true
+
+        // for (let i = 0; i < len; i++) {
+        //     const distance = center.dist(vertices[i])
+
+        //     if (distance < min) {
+        //         min = distance
+        //     }
+
+        //     if (distance > max) {
+        //         max = distance
+        //     }
+        //     console.log(this.radius, 'min', min, 'max', max)
+        //     if (this.radius > min)
+        //         return false
+        // }
+
+        // return this.radius < min
+    }
 }

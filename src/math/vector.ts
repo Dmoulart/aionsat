@@ -111,7 +111,16 @@ export class Vector {
     }
 
     /**
-     * Mutates a vector to be perpendicular to itself.
+     * Returns the distance between two vectors.
+     * 
+     * @returns this
+     */
+    dist(v: Vector): number {
+        return Math.sqrt((v.x - this.x) * (v.x - this.x) + (v.y - this.y) * (v.y - this.y))
+    }
+
+    /**
+     * Return a vector that is perpendicular to itself.
      * 
      * @returns this
      */

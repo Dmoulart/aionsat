@@ -1,5 +1,6 @@
 import { Projection } from "..";
 import { Vector } from "../math/vector";
+import { Circle } from "./circle";
 import { Shape } from "./shape";
 
 /**
@@ -49,6 +50,24 @@ export class Polygon extends Shape {
 
         return new Projection(min, max)
     }
+
+    /**
+     * Returns true if the polygon contains the specified circle.
+     * 
+     * @param b 
+     * @returns polygon is inside circle
+     */
+    public isInsideCircle(b: Circle) {
+        const vertices = this.vertices
+        const len = vertices.length
+        for (let i = 0; i < len; i++) {
+            if (!b.containsPoint(vertices[i])) {
+                return false
+            }
+        }
+        return true
+    }
+
 
     /**
      * Returns the vertices absolute positions of the polygon.

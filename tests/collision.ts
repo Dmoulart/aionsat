@@ -114,7 +114,7 @@ describe('Collisions', function () {
             assert(!collision)
         });
 
-        it('should be fully inside square and square should not be fully inside polygon', function () {
+        it('should be inside square and square should not be inside polygon', function () {
             const squareA = new Polygon(new Vector(20, 20), [
                 new Vector(0, 0),
                 new Vector(40, 0),
@@ -134,7 +134,7 @@ describe('Collisions', function () {
             assert(collision && !collision.aInB && collision.bInA)
         });
 
-        it('should not be fully inside square and square should not be fully inside polygon', function () {
+        it('should not be inside square and square should not be inside polygon', function () {
             const squareA = new Polygon(new Vector(20, 20), [
                 new Vector(0, 0),
                 new Vector(40, 0),
@@ -152,6 +152,38 @@ describe('Collisions', function () {
             const collision = new Sat().intersects(squareA, squareB)
 
             assert(collision && !collision.aInB && !collision.bInA)
+        });
+
+
+        it('should not be inside circle', function () {
+
+            const square = new Polygon(new Vector(15, 15), [
+                new Vector(0, 0),
+                new Vector(10, 0),
+                new Vector(10, 10),
+                new Vector(0, 10)
+            ])
+
+            const circle = new Circle(new Vector(20, 20), 20)
+
+            const collision = new Sat().intersects(circle, square)
+
+            assert(collision && !collision.aInB)
+        });
+
+        it('should be inside circle', function () {
+            const square = new Polygon(new Vector(20, 20), [
+                new Vector(0, 0),
+                new Vector(10, 0),
+                new Vector(10, 10),
+                new Vector(0, 10)
+            ])
+
+            const circle = new Circle(new Vector(0, 0), 60)
+
+            const collision = new Sat().intersects(square, circle)
+
+            assert(collision && collision.aInB)
         });
     })
 
@@ -225,5 +257,37 @@ describe('Collisions', function () {
 
             assert(collision && !collision.bInA)
         });
+
+        // it('should not be inside polygon', function () {
+        //     const circle = new Circle(new Vector(30, 30), 20)
+
+
+        //     const square = new Polygon(new Vector(30, 30), [
+        //         new Vector(0, 0),
+        //         new Vector(40, 0),
+        //         new Vector(40, 40),
+        //         new Vector(0, 40)
+        //     ])
+
+        //     const collision = new Sat().intersects(circle, square)
+
+        //     assert(collision && !collision.aInB)
+        // });
+
+        // it('should be inside polygon', function () {
+        //     const circle = new Circle(new Vector(30, 30), 2)
+
+
+        //     const square = new Polygon(new Vector(20, 20), [
+        //         new Vector(0, 0),
+        //         new Vector(40, 0),
+        //         new Vector(40, 40),
+        //         new Vector(0, 40)
+        //     ])
+
+        //     const collision = new Sat().intersects(circle, square)
+
+        //     assert(collision && collision.aInB)
+        // });
     })
 });
