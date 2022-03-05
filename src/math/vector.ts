@@ -2,7 +2,7 @@
  * A vector is a point in a coordinate system, represented by a pair of numbers.
  */
 export class Vector {
-  constructor(public x: number, public y: number) {}
+  constructor(public x: number, public y: number) { }
 
   /**
    * Return a vector of value zero, representing the origin of the coordinate system.
@@ -29,8 +29,8 @@ export class Vector {
    * @param  vector
    * @returns difference vector
    */
-  sub(v: Vector): Vector {
-    return new Vector(this.x - v.x, this.y - v.y);
+  sub(vector: Vector): Vector {
+    return new Vector(this.x - vector.x, this.y - vector.y);
   }
 
   /**
@@ -39,8 +39,8 @@ export class Vector {
    * @param  vector
    * @returns sum vector
    */
-  add(v: Vector): Vector {
-    return new Vector(this.x + v.x, this.y + v.y);
+  add(vector: Vector): Vector {
+    return new Vector(this.x + vector.x, this.y + vector.y);
   }
 
   /**
@@ -49,8 +49,8 @@ export class Vector {
    * @param vector
    * @returns divided vector
    */
-  div(v: Vector): Vector {
-    return new Vector(this.x / v.x, this.y / v.y);
+  div(vector: Vector): Vector {
+    return new Vector(this.x / vector.x, this.y / vector.y);
   }
 
   /**
@@ -68,8 +68,8 @@ export class Vector {
    * @param vector
    * @returns multiplicated vector
    */
-  mult(v: Vector): Vector {
-    return new Vector(this.x * v.x, this.y * v.y);
+  mult(vector: Vector): Vector {
+    return new Vector(this.x * vector.x, this.y * vector.y);
   }
 
   /**
@@ -79,8 +79,8 @@ export class Vector {
    * @param vector
    * @returns dot product
    */
-  dot(v: Vector): number {
-    return this.x * v.x + this.y * v.y;
+  dot(vector: Vector): number {
+    return this.x * vector.x + this.y * vector.y;
   }
 
   /**
@@ -112,8 +112,8 @@ export class Vector {
    *
    * @returns this
    */
-  dist(v: Vector): number {
-    return Math.sqrt((v.x - this.x) * (v.x - this.x) + (v.y - this.y) * (v.y - this.y));
+  dist(vector: Vector): number {
+    return Math.sqrt((vector.x - this.x) * (vector.x - this.x) + (vector.y - this.y) * (vector.y - this.y));
   }
 
   /**
@@ -123,6 +123,16 @@ export class Vector {
    */
   perp(): Vector {
     return new Vector(-this.y, this.x);
+  }
+
+  /**
+   * Returns true if two vectors have the same x and y values.  
+   * 
+   * @param vector
+   * @returns vector are equals
+   */
+  equals(vector: Vector): boolean {
+    return this.x === vector.x && this.y === vector.y;
   }
 }
 

@@ -171,7 +171,10 @@ export class Sat {
 
     const distanceSquareRoot = Math.sqrt(distanceSquared);
 
-    const normal = new Vector(distance.x / distanceSquareRoot, distance.y / distanceSquareRoot);
+    // Give the normal an arbitrary 1,0 normal if the distance is 0 
+    const normal = distanceSquareRoot !== 0
+      ? new Vector(distance.x / distanceSquareRoot, distance.y / distanceSquareRoot)
+      : new Vector(1, 0);
 
     const overlap = radiusSum - distanceSquareRoot;
 
