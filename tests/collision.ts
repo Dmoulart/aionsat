@@ -4,7 +4,6 @@ import { Circle } from '../dist/shapes/circle.js';
 
 var assert = require('assert');
 describe('Collisions', function () {
-  
   describe('Polygon', function () {
     it('should intersects triangle', function () {
       const square = new Polygon(new Vector(0, 0), [
