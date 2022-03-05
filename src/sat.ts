@@ -15,8 +15,8 @@ import { Shape } from './shapes/shape';
  *
  */
 export type Collision = {
-  a: Shape,
-  b: Shape,
+  a: Shape;
+  b: Shape;
   normal: Vector;
   overlap: number;
   aInB: boolean;
