@@ -1,7 +1,5 @@
-import { Polygon, Sat, vec, Vector } from '../dist';
-import { Collision } from '../dist/sat';
-import { Circle } from '../dist/shapes/circle';
-import { Shape } from '../dist/shapes/shape';
+import { Polygon, Sat, vec, Vector, Box, Circle, Shape } from '../dist';
+
 
 // Create canvas
 const canvas = document.createElement('canvas');
@@ -15,12 +13,8 @@ ctx.strokeStyle = 'white';
 const polyA = new Polygon(vec(window.innerWidth / 2, window.innerHeight / 2), [vec(0, 0), vec(100, 0), vec(100, 100)]);
 
 // Instantiate other shapes
-const square = new Polygon(vec(200, 200), [
-  vec(0, 0),
-  vec(100, 0),
-  //vec(10, 10),
-  vec(0, 100)
-]);
+const square = new Box(vec(200, 200), 100, 100);
+
 const squareB = new Polygon(vec(200, 200), [vec(0, 0), vec(10, 0), vec(10, 10), vec(0, 10)]);
 document.onmousemove = (e: MouseEvent) => {
   // circleA.pos = vec(e.clientX, e.clientY)
