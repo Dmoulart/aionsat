@@ -11,7 +11,7 @@ export abstract class Shape {
      * The shape's world position.
      *
      */
-    public pos: Vector
+    public pos: Vector = Vector.origin
   ) {}
 
   /**

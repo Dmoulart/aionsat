@@ -6,7 +6,23 @@ import { Polygon } from './polygon';
  *
  */
 export class Box extends Polygon {
-  constructor(public pos: Vector, public width: number, public height: number) {
-    super(pos, [new Vector(0, 0), new Vector(width, 0), new Vector(width, height), new Vector(0, height)]);
+  constructor(
+    /**
+     * The box width.
+     *
+     */
+    public width: number,
+    /**
+     * The box height.
+     *
+     */
+    public height: number,
+    /**
+     * The box position.
+     *
+     */
+    public pos: Vector = Vector.origin
+  ) {
+    super([new Vector(0, 0), new Vector(width, 0), new Vector(width, height), new Vector(0, height)], pos);
   }
 }

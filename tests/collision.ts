@@ -6,14 +6,12 @@ var assert = require('assert');
 describe('Collisions', function () {
   describe('Polygon', function () {
     it('should intersects triangle', function () {
-      const square = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const triangle = new Polygon(new Vector(30, 0), [new Vector(0, 0), new Vector(30, 0), new Vector(0, 30)]);
+      const triangle = new Polygon([new Vector(0, 0), new Vector(30, 0), new Vector(0, 30)], new Vector(30, 0));
 
       const collision = new Sat().intersects(square, triangle);
 
@@ -21,19 +19,15 @@ describe('Collisions', function () {
     });
 
     it('should intersects square', function () {
-      const squareA = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareA = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const squareB = new Polygon(new Vector(30, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareB = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(30, 0)
+      );
 
       const collision = new Sat().intersects(squareA, squareB);
 
@@ -41,19 +35,15 @@ describe('Collisions', function () {
     });
 
     it('should not intersects square', function () {
-      const squareA = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareA = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const squareB = new Polygon(new Vector(50, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareB = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(50, 0)
+      );
 
       const collision = new Sat().intersects(squareA, squareB);
 
@@ -61,14 +51,12 @@ describe('Collisions', function () {
     });
 
     it('should not intersects triangle', function () {
-      const square = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const triangle = new Polygon(new Vector(50, 0), [new Vector(0, 0), new Vector(30, 0), new Vector(0, 30)]);
+      const triangle = new Polygon([new Vector(0, 0), new Vector(30, 0), new Vector(0, 30)], new Vector(50, 0));
 
       const collision = new Sat().intersects(square, triangle);
 
@@ -76,14 +64,12 @@ describe('Collisions', function () {
     });
 
     it('should intersects circle', function () {
-      const poly = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const poly = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const circle = new Circle(new Vector(20, 20), 20);
+      const circle = new Circle(20, new Vector(20, 20));
 
       const collision = new Sat().intersects(poly, circle);
 
@@ -91,14 +77,12 @@ describe('Collisions', function () {
     });
 
     it('should not intersects circle', function () {
-      const poly = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const poly = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(0, 0)
+      );
 
-      const circle = new Circle(new Vector(80, 0), 20);
+      const circle = new Circle(20, new Vector(80, 0));
 
       const collision = new Sat().intersects(poly, circle);
 
@@ -106,19 +90,15 @@ describe('Collisions', function () {
     });
 
     it('should be inside square and square should not be inside polygon', function () {
-      const squareA = new Polygon(new Vector(20, 20), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareA = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(20, 20)
+      );
 
-      const squareB = new Polygon(new Vector(30, 30), [
-        new Vector(0, 0),
-        new Vector(10, 0),
-        new Vector(10, 10),
-        new Vector(0, 10)
-      ]);
+      const squareB = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(30, 30)
+      );
 
       const collision = new Sat().intersects(squareA, squareB);
 
@@ -126,19 +106,15 @@ describe('Collisions', function () {
     });
 
     it('should not be inside square and square should not be inside polygon', function () {
-      const squareA = new Polygon(new Vector(20, 20), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const squareA = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(20, 20)
+      );
 
-      const squareB = new Polygon(new Vector(55, 55), [
-        new Vector(0, 0),
-        new Vector(10, 0),
-        new Vector(10, 10),
-        new Vector(0, 10)
-      ]);
+      const squareB = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(55, 55)
+      );
 
       const collision = new Sat().intersects(squareA, squareB);
 
@@ -146,14 +122,12 @@ describe('Collisions', function () {
     });
 
     it('should not be inside circle', function () {
-      const square = new Polygon(new Vector(15, 15), [
-        new Vector(0, 0),
-        new Vector(10, 0),
-        new Vector(10, 10),
-        new Vector(0, 10)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(15, 15)
+      );
 
-      const circle = new Circle(new Vector(20, 20), 20);
+      const circle = new Circle(20, new Vector(20, 20));
 
       const collision = new Sat().intersects(circle, square);
 
@@ -161,14 +135,12 @@ describe('Collisions', function () {
     });
 
     it('should be inside circle', function () {
-      const square = new Polygon(new Vector(20, 20), [
-        new Vector(0, 0),
-        new Vector(10, 0),
-        new Vector(10, 10),
-        new Vector(0, 10)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(20, 20)
+      );
 
-      const circle = new Circle(new Vector(0, 0), 60);
+      const circle = new Circle(60, new Vector(0, 0));
 
       const collision = new Sat().intersects(square, circle);
 
@@ -178,9 +150,9 @@ describe('Collisions', function () {
 
   describe('Circle', function () {
     it('should intersects circle', function () {
-      const circleA = new Circle(new Vector(70, 0), 20);
+      const circleA = new Circle(20, new Vector(70, 0));
 
-      const circleB = new Circle(new Vector(80, 0), 20);
+      const circleB = new Circle(20, new Vector(80, 0));
 
       const collision = new Sat().intersects(circleA, circleB);
 
@@ -188,9 +160,9 @@ describe('Collisions', function () {
     });
 
     it('should not intersects circle', function () {
-      const circleA = new Circle(new Vector(70, 0), 20);
+      const circleA = new Circle(20, new Vector(70, 0));
 
-      const circleB = new Circle(new Vector(120, 0), 20);
+      const circleB = new Circle(20, new Vector(120, 0));
 
       const collision = new Sat().intersects(circleA, circleB);
 
@@ -198,14 +170,12 @@ describe('Collisions', function () {
     });
 
     it('should intersects polygon', function () {
-      const circle = new Circle(new Vector(0, 0), 20);
+      const circle = new Circle(20, new Vector(0, 0));
 
-      const square = new Polygon(new Vector(15, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(15, 0)
+      );
 
       const collision = new Sat().intersects(circle, square);
 
@@ -213,14 +183,12 @@ describe('Collisions', function () {
     });
 
     it('should not intersects polygon', function () {
-      const circle = new Circle(new Vector(0, 0), 20);
+      const circle = new Circle(20, new Vector(0, 0));
 
-      const square = new Polygon(new Vector(25, 0), [
-        new Vector(0, 0),
-        new Vector(40, 0),
-        new Vector(40, 40),
-        new Vector(0, 40)
-      ]);
+      const square = new Polygon(
+        [new Vector(0, 0), new Vector(40, 0), new Vector(40, 40), new Vector(0, 40)],
+        new Vector(25, 0)
+      );
 
       const collision = new Sat().intersects(circle, square);
 
@@ -228,9 +196,9 @@ describe('Collisions', function () {
     });
 
     it('should be inside circle', function () {
-      const circleA = new Circle(new Vector(0, 0), 20);
+      const circleA = new Circle(20, new Vector(0, 0));
 
-      const circleB = new Circle(new Vector(5, 5), 2);
+      const circleB = new Circle(2, new Vector(5, 5));
 
       const collision = new Sat().intersects(circleA, circleB);
 
@@ -238,9 +206,9 @@ describe('Collisions', function () {
     });
 
     it('should not be inside circle', function () {
-      const circleA = new Circle(new Vector(0, 0), 20);
+      const circleA = new Circle(20, new Vector(0, 0));
 
-      const circleB = new Circle(new Vector(15, 15), 10);
+      const circleB = new Circle(10, new Vector(15, 15));
 
       const collision = new Sat().intersects(circleA, circleB);
 

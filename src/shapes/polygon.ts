@@ -15,7 +15,7 @@ export class Polygon extends Shape {
    */
   private _vertices: Vector[] = [];
 
-  constructor(pos: Vector, vertices: Vector[] = []) {
+  constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
     if (vertices.length < 3) {
       throw new Error(`Polygon has been instanciated with less than 3 vertices.`);

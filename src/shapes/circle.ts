@@ -9,16 +9,16 @@ import { Shape } from './shape';
 export class Circle extends Shape {
   constructor(
     /**
-     * The circle's center.
-     *
-     */
-    public pos: Vector,
-
-    /**
      * The circle's radius.
      *
      */
-    public radius: number
+    public radius: number,
+
+    /**
+     * The circle's center.
+     *
+     */
+    public pos: Vector = Vector.origin
   ) {
     super(pos);
   }

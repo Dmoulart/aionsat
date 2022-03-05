@@ -9,22 +9,22 @@ const ctx = canvas.getContext('2d');
 ctx.strokeStyle = 'white';
 
 // Instantiate user polygon
-const polyA = new Polygon(vec(window.innerWidth / 2, window.innerHeight / 2), [vec(0, 0), vec(100, 0), vec(100, 100)]);
+const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
 
 // Instantiate other shapes
 const square = new Box(vec(200, 200), 100, 100);
 
-const squareB = new Polygon(vec(200, 200), [vec(0, 0), vec(10, 0), vec(10, 10), vec(0, 10)]);
+const squareB = new Polygon([vec(0, 0), vec(10, 0), vec(10, 10), vec(0, 10)], vec(200, 200));
 document.onmousemove = (e: MouseEvent) => {
   // circleA.pos = vec(e.clientX, e.clientY)
   squareB.pos = vec(e.clientX, e.clientY);
 };
 
-const circleA = new Circle(vec(200, 200), 10);
+const circleA = new Circle(10, vec(200, 200));
 document.onmousemove = (e: MouseEvent) => {
   square.pos = vec(e.clientX, e.clientY);
 };
-const circleB = new Circle(vec(400, 200), 120);
+const circleB = new Circle(120, vec(400, 200));
 
 const sat = new Sat();
 

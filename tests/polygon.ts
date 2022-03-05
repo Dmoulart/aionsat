@@ -4,13 +4,13 @@ var assert = require('assert');
 describe('Polygon', function () {
   it('cannot be instantiated with less than three vertices', function () {
     assert.throws(() => {
-      new Polygon(new Vector(0, 0), [new Vector(0, 0), new Vector(0, 0)]);
+      new Polygon([new Vector(0, 0), new Vector(0, 0)], new Vector(0, 0));
     }, Error);
   });
 
   describe('vertices', function () {
     it('have a world position that is the sum of vertices local position and shape position.', function () {
-      const polygon = new Polygon(new Vector(10, 10), [new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)]);
+      const polygon = new Polygon([new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)], new Vector(10, 10));
 
       const vertices = polygon.vertices;
 
@@ -24,7 +24,7 @@ describe('Polygon', function () {
 
   describe('axes', function () {
     it('should be perpendicular to each side and of length 1', function () {
-      const polygon = new Polygon(new Vector(0, 0), [new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)]);
+      const polygon = new Polygon([new Vector(0, 0), new Vector(10, 0), new Vector(10, 0)], new Vector(0, 0));
 
       const axes = polygon.axes;
 
@@ -35,12 +35,10 @@ describe('Polygon', function () {
 
   describe('centroid', function () {
     it('should be the correct value for a square', function () {
-      const rectangle = new Polygon(new Vector(0, 0), [
-        new Vector(0, 0),
-        new Vector(10, 0),
-        new Vector(10, 10),
-        new Vector(0, 10)
-      ]);
+      const rectangle = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(0, 0)
+      );
 
       const centroid = rectangle.centroid;
 
@@ -48,7 +46,7 @@ describe('Polygon', function () {
       assert.equal(centroid.y, 5);
     });
     it('should be the correct value for a triangle', function () {
-      const triangle = new Polygon(new Vector(0, 0), [new Vector(0, 0), new Vector(100, 0), new Vector(50, 99)]);
+      const triangle = new Polygon([new Vector(0, 0), new Vector(100, 0), new Vector(50, 99)], new Vector(0, 0));
 
       const centroid = triangle.centroid;
 
