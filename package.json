@@ -1,6 +1,6 @@
 {
   "name": "aionsat",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An implementation of the separating axis theorem. This package is a learning project inspired by sat.js.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
