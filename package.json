@@ -1,19 +1,25 @@
 {
   "name": "aionsat",
   "version": "1.0.0",
-  "description": "A study of sat algolrythm",
+  "description": "An implementation of the separating axis theorem. This package is a learning project inspired by sat.js.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "/dist"
+    "/dist/**/*"
   ],
   "author": "aion",
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"**/*.{ts,js}\"",
+    "build": "tsc -p tsconfig.json",
     "watch": "tsc --w",
-    "dev": "parcel serve ./example/index.html && watch",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
+    "dev": "parcel serve ./sandbox/index.html",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "prepare": "yarn build && yarn format && yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dmoulart/sat.git"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-types": "^2.3.2",
