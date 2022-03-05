@@ -1,2 +1,2 @@
-export { Circle } from './circle'
-export { Polygon } from './polygon'
+export { Circle } from './circle';
+export { Polygon } from './polygon';

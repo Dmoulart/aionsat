@@ -2,7 +2,7 @@
  * A vector is a point in a coordinate system, represented by a pair of numbers.
  */
 export class Vector {
-  constructor(public x: number, public y: number) { }
+  constructor(public x: number, public y: number) {}
 
   /**
    * Return a vector of value zero, representing the origin of the coordinate system.
@@ -126,8 +126,8 @@ export class Vector {
   }
 
   /**
-   * Returns true if two vectors have the same x and y values.  
-   * 
+   * Returns true if two vectors have the same x and y values.
+   *
    * @param vector
    * @returns vector are equals
    */
