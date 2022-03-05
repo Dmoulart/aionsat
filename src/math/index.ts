@@ -1,2 +1,2 @@
-export { Projection } from './projection'
-export { Vector, vec } from './vector'
+export { Projection } from './projection';
+export { Vector, vec } from './vector';

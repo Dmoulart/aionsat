@@ -1,6 +1,5 @@
 import { Polygon, Sat, vec, Vector, Box, Circle, Shape } from '../dist';
 
-
 // Create canvas
 const canvas = document.createElement('canvas');
 canvas.width = innerWidth;
