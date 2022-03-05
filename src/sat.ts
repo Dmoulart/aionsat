@@ -6,6 +6,8 @@ import { Shape } from './shapes/shape';
 /**
  * The collision data returned by the SAT intersection methods.
  * It consists of :
+ * - a: the first shape
+ * - b: the second shape
  * - normal : it is the collision axis
  * - overlap : the penetration coefficient
  * - aInB : true if the shape A is fully inside the shape B
@@ -13,6 +15,8 @@ import { Shape } from './shapes/shape';
  *
  */
 export type Collision = {
+  a: Shape,
+  b: Shape,
   normal: Vector;
   overlap: number;
   aInB: boolean;
@@ -146,6 +150,8 @@ export class Sat {
     if (a.centroid.sub(b.centroid).dot(normal) < 0) normal = normal.negate();
 
     return {
+      a,
+      b,
       normal,
       overlap,
       aInB,
@@ -183,6 +189,8 @@ export class Sat {
     const bInA = b.radius <= a.radius && distanceSquareRoot <= a.radius - b.radius;
 
     return {
+      a,
+      b,
       normal,
       overlap,
       aInB: aInB,
@@ -251,6 +259,8 @@ export class Sat {
     bInA = false;
 
     return {
+      a,
+      b,
       normal,
       overlap,
       aInB,
@@ -272,6 +282,8 @@ export class Sat {
     if (!response) return false;
 
     return {
+      a,
+      b,
       normal: response.normal.negate(),
       overlap: response.overlap,
       aInB: response.bInA,
