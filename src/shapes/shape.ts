@@ -1,24 +1,24 @@
-import { Projection } from "..";
-import { Vector } from "../math/vector";
+import { Projection } from '..';
+import { Vector } from '../math/vector';
 
 /**
  * The abstract class Shape from which Circle and Polygon derive.
- * 
+ *
  */
 export abstract class Shape {
-    constructor(
-        /**
-         * The shape's world position.
-         * 
-         */
-        public pos: Vector
-    ) { }
-
+  constructor(
     /**
-     * Project the shape onto a given axis.
-     * 
-     * @param axis 
-     * @returns projection
+     * The shape's world position.
+     *
      */
-    public abstract project(axis: Vector): Projection
+    public pos: Vector
+  ) {}
+
+  /**
+   * Project the shape onto a given axis.
+   *
+   * @param axis
+   * @returns projection
+   */
+  public abstract project(axis: Vector): Projection;
 }
