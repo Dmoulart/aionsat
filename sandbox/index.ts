@@ -12,7 +12,7 @@ ctx.strokeStyle = 'white';
 const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
 
 // Instantiate other shapes
-const square = new Box(vec(200, 200), 100, 100);
+const square = new Box(100, 100, vec(200, 200));
 
 const squareB = new Polygon([vec(0, 0), vec(10, 0), vec(10, 10), vec(0, 10)], vec(200, 200));
 document.onmousemove = (e: MouseEvent) => {
