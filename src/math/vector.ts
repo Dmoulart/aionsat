@@ -2,7 +2,7 @@
  * A vector is a point in a coordinate system, represented by a pair of numbers.
  */
 export class Vector {
-  constructor(public x: number, public y: number) {}
+  constructor(public x: number = 0, public y: number = 0) { }
 
   /**
    * Return a vector of value zero, representing the origin of the coordinate system.
@@ -11,6 +11,15 @@ export class Vector {
    */
   static get origin(): Vector {
     return new Vector(0, 0);
+  }
+
+  /**
+   * Return a vector of value zero. It has the same value than the origin vector but is semantically different.
+   *
+   * @returns zero vector
+   */
+  static get zero(): Vector {
+    return Vector.origin
   }
 
   /**
@@ -34,6 +43,19 @@ export class Vector {
   }
 
   /**
+  * Substract another vector with this one and return this one for chaining.
+  * Warning: this vector is modified in place.
+  *
+  * @param  vector
+  * @returns this vector
+  */
+  mutSub(vector: Vector): this {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    return this;
+  }
+
+  /**
    * Add two vectors together and returns the resulting vector.
    *
    * @param  vector
@@ -41,6 +63,19 @@ export class Vector {
    */
   add(vector: Vector): Vector {
     return new Vector(this.x + vector.x, this.y + vector.y);
+  }
+
+  /**
+  * Add another vector to this one and return this one for chaining.
+  * Warning: this vector is modified in place.
+  *
+  * @param  vector
+  * @returns this vector
+  */
+  mutAdd(vector: Vector): this {
+    this.x += vector.x;
+    this.y += vector.y;
+    return this;
   }
 
   /**
@@ -54,12 +89,37 @@ export class Vector {
   }
 
   /**
+  * Divide another vector with this one and return this one for chaining.
+  * Warning: this vector is modified in place.
+  *
+  * @param  vector
+  * @returns this vector
+  */
+  mutDiv(vector: Vector): this {
+    this.x /= vector.x;
+    this.y /= vector.y;
+    return this;
+  }
+
+  /**
    * Returns a vector that is equal to the vector multiplied by -1.
    *
    * @returns negative vector
    */
   negate(): Vector {
     return this.scale(-1);
+  }
+
+  /**
+  * Make this vector negative.
+  * Warning: this vector is modified in place.
+  *
+  * @returns this vector
+  */
+  mutNegate(): this {
+    this.x *= -1;
+    this.y *= -1;
+    return this;
   }
 
   /**
@@ -70,6 +130,18 @@ export class Vector {
    */
   mult(vector: Vector): Vector {
     return new Vector(this.x * vector.x, this.y * vector.y);
+  }
+
+  /**
+  * Multiply this vector by another one.
+  * Warning: this vector is modified in place.
+  *
+  * @returns this vector
+  */
+  mutMult(vector: Vector): this {
+    this.x *= vector.x;
+    this.y *= vector.y;
+    return this;
   }
 
   /**
@@ -95,6 +167,25 @@ export class Vector {
       return new Vector(this.x / mag, this.y / mag);
     } else {
       return new Vector(0, 1);
+    }
+  }
+
+  /**
+  * Normalize this vector.
+  * Warning: this vector is modified in place.
+  *
+  * @returns this vector
+  */
+  mutNorm(): this {
+    const mag = this.mag();
+    if (mag > 0) {
+      this.x /= mag;
+      this.y /= mag;
+      return this;
+    } else {
+      this.x = 0;
+      this.y = 1;
+      return this;
     }
   }
 
@@ -126,6 +217,17 @@ export class Vector {
   }
 
   /**
+   * Make this vector perendicular to itself.
+   *
+   * @returns this
+   */
+  mutPerp(): this {
+    this.x = -this.y;
+    this.y = this.x;
+    return this;
+  }
+
+  /**
    * Returns true if two vectors have the same x and y values.
    *
    * @param vector
@@ -134,8 +236,37 @@ export class Vector {
   equals(vector: Vector): boolean {
     return this.x === vector.x && this.y === vector.y;
   }
+
+  /**
+   * Apply the values of the given vector to this vector.
+   *
+   * @param vector
+   * @returns this vector
+   */
+  copy(vector: Vector): this {
+    this.x = vector.x;
+    this.y = vector.y;
+    return this
+  }
+
+  /**
+   * Set the x and y values of this vector.
+   *
+   * @param x
+   * @param y
+   * @returns this vector
+   */
+  set(x: number, y: number = x): this {
+    this.x = x;
+    this.y = y;
+    return this
+  }
+
 }
 
+// A shortcut function to instantiate vector
 export function vec(x = 0, y = x): Vector {
   return new Vector(x, y);
 }
+
+export const Vectors = new Array<Vector>(20).fill(new Vector)
