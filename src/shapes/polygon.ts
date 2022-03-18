@@ -33,6 +33,9 @@ export class Polygon extends Shape {
       throw new Error(`Polygon has been instanciated with less than 3 vertices.`);
     }
     this._vertices = vertices;
+
+    // Preallocate the world vertices array.
+    this._worldVertices = new Array(vertices.length).fill(0).map(() => new Vector());
   }
 
   /**
