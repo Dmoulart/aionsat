@@ -15,6 +15,18 @@ export class Polygon extends Shape {
    */
   private _vertices: Vector[] = [];
 
+  /**
+   * The vertices in their absolute positions.
+   *
+   */
+  private _worldVertices: Vector[] = [];
+
+  /**
+   * The axes of the polygon. The axes are normalized and perpendicular to the edges of the polygon.
+   *
+   */
+  private _axes: Vector[] = [];
+
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
     if (vertices.length < 3) {
@@ -73,13 +85,11 @@ export class Polygon extends Shape {
    * @returns vertices absolute positions
    */
   public get vertices(): Vector[] {
-    const vertices = [];
-
     for (let i = 0; i < this._vertices.length; i++) {
-      vertices.push(this.pos.add(this._vertices[i]));
+      this._worldVertices[i] = this.pos.add(this._vertices[i]);
     }
 
-    return vertices;
+    return this._worldVertices;
   }
 
   /**
@@ -100,8 +110,6 @@ export class Polygon extends Shape {
     const vertices = this.vertices;
     const len = vertices.length;
 
-    const axes = [];
-
     for (let i = 0; i < len; i++) {
       const currentVertex = vertices[i];
 
@@ -111,9 +119,9 @@ export class Polygon extends Shape {
       const perp = edge.perp();
       const normal = perp.norm();
 
-      axes[i] = normal;
+      this._axes[i] = normal;
     }
-    return axes;
+    return this._axes;
   }
 
   /**

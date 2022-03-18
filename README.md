@@ -8,3 +8,7 @@ This package is intended to be a learning project inspired by sat.js and dyn4j p
 `npm i aionsat`
 
 `yarn add aionsat`
+
+# Perfs
+
+branch -> perf-b
