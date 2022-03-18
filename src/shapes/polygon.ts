@@ -93,7 +93,9 @@ export class Polygon extends Shape {
   public get vertices(): Vector[] {
     for (let i = 0; i < this._vertices.length; i++) {
       // Use the precedent world vertex instance to avoid creating new instances.
-      this._worldVertices[i] = this._worldVertices[i].copy(this.pos).mutAdd(this._vertices[i]);
+      this._worldVertices[i] = this._worldVertices[i]
+        .copy(this.pos)
+        .mutAdd(this._vertices[i]);
     }
 
     return this._worldVertices;
@@ -120,13 +122,14 @@ export class Polygon extends Shape {
     for (let i = 0; i < len; i++) {
       const currentVertex = vertices[i];
 
-      const nextVertex = vertices[(i + 1) % len];
-      const edge = nextVertex.sub(currentVertex);
+      // Reuse the precedent axis instance to avoid creating new instances.
+      const nextVertex = this._axes[i].copy(vertices[(i + 1) % len]);
 
-      const perp = edge.perp();
-      const normal = perp.norm();
+      this._axes[i] = nextVertex
+        .mutSub(currentVertex)
+        .mutPerp()
+        .mutNorm()
 
-      this._axes[i] = normal;
     }
     return this._axes;
   }
