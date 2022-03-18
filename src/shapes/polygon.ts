@@ -19,13 +19,13 @@ export class Polygon extends Shape {
    * The vertices in their absolute positions.
    *
    */
-  private _worldVertices: Vector[] = [];
+  private _worldVertices: Vector[];
 
   /**
    * The axes of the polygon. The axes are normalized and perpendicular to the edges of the polygon.
    *
    */
-  private _axes: Vector[] = [];
+  private _axes: Vector[];
 
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
@@ -36,6 +36,9 @@ export class Polygon extends Shape {
 
     // Preallocate the world vertices array.
     this._worldVertices = new Array(vertices.length).fill(0).map(() => new Vector());
+
+    // Preallocate the axes vertices array.
+    this._axes = new Array(vertices.length).fill(0).map(() => new Vector());
   }
 
   /**
@@ -89,7 +92,8 @@ export class Polygon extends Shape {
    */
   public get vertices(): Vector[] {
     for (let i = 0; i < this._vertices.length; i++) {
-      this._worldVertices[i] = this.pos.add(this._vertices[i]);
+      // Use the precedent world vertex instance to avoid creating new instances.
+      this._worldVertices[i] = this._worldVertices[i].copy(this.pos).mutAdd(this._vertices[i]);
     }
 
     return this._worldVertices;
