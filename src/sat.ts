@@ -66,6 +66,11 @@ export class Sat {
     const lenA = axesA.length;
     const lenB = axesB.length;
 
+    // The axes and vertices of the polygons have been calculated at this point
+    // and will not move during the collision detection
+    a.recalc = false
+    b.recalc = false
+    
     let overlap = Number.MAX_VALUE;
     let normal: Vector = Vector.origin;
 
@@ -147,7 +152,13 @@ export class Sat {
     }
 
     // If the smallest penetration normal points into shape b flip it
-    if (a.centroid.sub(b.centroid).dot(normal) < 0) normal = normal.negate();
+    if (a.centroid.sub(b.centroid).dot(normal) < 0)
+      normal.mutNegate();
+
+    // We must inform the polygons to recalculate their axes and vertices for the next time they 
+    // will be called
+    a.recalc = true
+    b.recalc = true
 
     return {
       a,

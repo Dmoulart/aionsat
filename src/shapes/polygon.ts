@@ -27,7 +27,6 @@ export class Polygon extends Shape {
    */
   private _axes: Vector[];
 
-
   /**
    * The axis projection of the polygon. We keep a reference to it so we do not have to instantiate a new 
    * one each time we must calculate it.
@@ -39,6 +38,12 @@ export class Polygon extends Shape {
    */
   private _centroid: Vector;
 
+  /**
+   * Specify if we must recalculate the vertices positions and the axes.
+   * It is triggered to false when they have been setted in the beginning of the 
+   * collision detection. It is then setted to true at the end of the collision detection.
+   */
+  private _recalc: boolean;
 
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
@@ -58,6 +63,9 @@ export class Polygon extends Shape {
 
     // Initialize the centroid instance we'll recycle.
     this._centroid = new Vector();
+
+    // Initialize the recalc flag to true.
+    this._recalc = true;
   }
 
   /**
@@ -110,6 +118,9 @@ export class Polygon extends Shape {
    * @returns vertices absolute positions
    */
   public get vertices(): Vector[] {
+    // If the vertices do not need to be recalculated, we just reuse theù
+    if (!this.recalc) return this._worldVertices;
+
     for (let i = 0; i < this._vertices.length; i++) {
       // Use the precedent world vertex instance to avoid creating new instances.
       this._worldVertices[i] = this._worldVertices[i]
@@ -136,6 +147,9 @@ export class Polygon extends Shape {
    * @returns axes
    */
   public get axes(): Vector[] {
+    // If the vertices do not need to be recalculated, we just reuse theù
+    if (!this.recalc) return this._axes;
+
     const vertices = this.vertices;
     const len = vertices.length;
 
@@ -172,5 +186,23 @@ export class Polygon extends Shape {
     }
 
     return this._centroid;
+  }
+
+  /**
+   * Returns true if the vertices and polygon axes must be recalculated. 
+   * 
+   * @returns must recalculate
+   */
+  public get recalc(): boolean {
+    return this._recalc;
+  }
+
+  /**
+   * State if the vertices and polygon axes must be recalculated.
+   * 
+   * @param mustRecalculate
+   */
+  public set recalc(mustRecalculate: boolean) {
+    this._recalc = mustRecalculate;
   }
 }
