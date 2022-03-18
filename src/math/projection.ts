@@ -9,14 +9,14 @@ export class Projection {
      * The beginning of the projection.
      *
      */
-    public min: number,
+    public min = 0,
 
     /**
      * The end of the projection
      *
      */
-    public max: number
-  ) {}
+    public max = 0
+  ) { }
 
   /**
    * Returns true if two projections overlap.
@@ -24,7 +24,7 @@ export class Projection {
    * @param otherProjection
    * @returns is overlapping with other projection
    */
-  overlap(other: Projection): boolean {
+  public overlap(other: Projection): boolean {
     return !(this.min > other.max || this.max < other.min);
   }
 
@@ -34,9 +34,22 @@ export class Projection {
    * @param other
    * @returns overlap value
    */
-  getOverlap(other: Projection): number {
+  public getOverlap(other: Projection): number {
     if (!this.overlap(other)) return 0;
 
     return Math.min(other.max - this.min, this.max - other.min);
+  }
+
+  /**
+   * Mutate the min and max values of the projection.
+   * 
+   * @param min 
+   * @param max 
+   * @returns this projection
+   */
+  public set(min: number, max: number): this {
+    this.min = min;
+    this.max = max;
+    return this;
   }
 }

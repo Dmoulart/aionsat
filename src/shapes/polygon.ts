@@ -27,6 +27,19 @@ export class Polygon extends Shape {
    */
   private _axes: Vector[];
 
+
+  /**
+   * The axis projection of the polygon. We keep a reference to it so we do not have to instantiate a new 
+   * one each time we must calculate it.
+   */
+  private _projection: Projection
+
+  /**
+   * The center of the polygon, in aboslute coordinates.
+   */
+  private _centroid: Vector;
+
+
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
     if (vertices.length < 3) {
@@ -39,6 +52,12 @@ export class Polygon extends Shape {
 
     // Preallocate the axes vertices array.
     this._axes = new Array(vertices.length).fill(0).map(() => new Vector());
+
+    // Initialize the projection instance we'll recycle.
+    this._projection = new Projection();
+
+    // Initialize the centroid instance we'll recycle.
+    this._centroid = new Vector();
   }
 
   /**
@@ -65,7 +84,7 @@ export class Polygon extends Shape {
       }
     }
 
-    return new Projection(min, max);
+    return this._projection.set(min, max);
   }
 
   /**
@@ -94,8 +113,8 @@ export class Polygon extends Shape {
     for (let i = 0; i < this._vertices.length; i++) {
       // Use the precedent world vertex instance to avoid creating new instances.
       this._worldVertices[i] = this._worldVertices[i]
-        .copy(this.pos)
-        .mutAdd(this._vertices[i]);
+        .copy(this.pos)             // Get the current position.
+        .mutAdd(this._vertices[i]); // Add the vertex relative position.
     }
 
     return this._worldVertices;
@@ -112,6 +131,7 @@ export class Polygon extends Shape {
 
   /**
    * Returns the axes perpendicular to the edges of the polygon.
+   * Use it to find the separating axis.
    *
    * @returns axes
    */
@@ -120,17 +140,14 @@ export class Polygon extends Shape {
     const len = vertices.length;
 
     for (let i = 0; i < len; i++) {
-      const currentVertex = vertices[i];
-
       // Reuse the precedent axis instance to avoid creating new instances.
-      const nextVertex = this._axes[i].copy(vertices[(i + 1) % len]);
-
-      this._axes[i] = nextVertex
-        .mutSub(currentVertex)
-        .mutPerp()
-        .mutNorm()
-
+      this._axes[i] = this._axes[i]
+        .copy(vertices[(i + 1) % len]) // Get the next vertex.
+        .mutSub(vertices[i])           // Substract the next vertex with the current vertex.
+        .mutPerp()                     // Get the perpendicular vector.
+        .mutNorm()                     // Normalize it to get the unit vector
     }
+
     return this._axes;
   }
 
@@ -143,16 +160,17 @@ export class Polygon extends Shape {
     const vertices = this.vertices;
     const len = vertices.length;
 
-    return vertices.reduce(function (center, point, i) {
-      center.x += point.x;
-      center.y += point.y;
+    this._centroid.set(0, 0)
+
+    for (let i = 0; i < len; i++) {
+      this._centroid.mutAdd(vertices[i]);
 
       if (i === len - 1) {
-        center.x /= len;
-        center.y /= len;
+        this._centroid.x /= len;
+        this._centroid.y /= len;
       }
+    }
 
-      return center;
-    }, new Vector(0, 0));
+    return this._centroid;
   }
 }

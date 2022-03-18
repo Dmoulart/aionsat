@@ -2,7 +2,17 @@
  * A vector is a point in a coordinate system, represented by a pair of numbers.
  */
 export class Vector {
-  constructor(public x: number = 0, public y: number = 0) { }
+  constructor(
+    /**
+     * The X value represents the horizontal axis.
+     */
+    public x = 0,
+
+    /**
+     * The Y value represents the vertical axis.
+     */
+    public y = 0
+  ) { }
 
   /**
    * Return a vector of value zero, representing the origin of the coordinate system.
@@ -222,8 +232,9 @@ export class Vector {
    * @returns this
    */
   mutPerp(): this {
+    const temp = this.x;
     this.x = -this.y;
-    this.y = this.x;
+    this.y = temp;
     return this;
   }
 
