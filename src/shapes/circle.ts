@@ -14,6 +14,21 @@ export class Circle extends Shape {
    */
   private _radius: number;
 
+  /**
+   * The projection direction and radius. This reserve one vector instance to perform this calculation.
+   */
+  private _projectionDirectionAndRadius: Vector;
+
+  /**
+   *  The first projection point. This reserve one vector instance to perform this calculation.
+   */
+  private _projectionPoint1: Vector;
+
+  /**
+   *  The second projection point. This reserve one vector instance to perform this calculation.
+   */
+  private _projectionPoint2: Vector;
+
   constructor(
     /**
      * Circle's have a default radius of 50.
@@ -31,6 +46,13 @@ export class Circle extends Shape {
       throw new Error(`Circle was instantiated with a radius of ${radius}. Radius cannot be less than zero.`);
     }
     this._radius = radius
+
+    // Initialize the projection direction and radius.
+    this._projectionDirectionAndRadius = Vector.infinity
+
+    // Initialize the projection points
+    this._projectionPoint1 = Vector.infinity
+    this._projectionPoint2 = Vector.infinity
   }
 
   /**
@@ -40,21 +62,27 @@ export class Circle extends Shape {
    * @returns projection
    */
   public project(axis: Vector): Projection {
-    const direction = axis;
-    const directionAndRadius = direction.scale(this.radius);
+    this._projectionDirectionAndRadius
+      .copy(axis)
+      .mutScale(this.radius);
 
-    const point1 = this.pos.add(directionAndRadius);
-    const point2 = this.pos.sub(directionAndRadius);
+    this._projectionPoint1
+      .copy(this.pos)
+      .mutAdd(this._projectionDirectionAndRadius);
 
-    let min = point1.dot(axis);
-    let max = point2.dot(axis);
+    this._projectionPoint2
+      .copy(this.pos)
+      .mutSub(this._projectionDirectionAndRadius);
+
+    let min = this._projectionPoint1.dot(axis);
+    let max = this._projectionPoint2.dot(axis);
 
     if (min > max) {
-      // Swap the values
+      // Swap the values if the points are in the wrong order.
       [min, max] = [max, min];
     }
 
-    return new Projection(min, max);
+    return this._projection.set(min, max);
   }
 
   /**

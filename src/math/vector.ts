@@ -52,6 +52,19 @@ export class Vector {
   }
 
   /**
+   * Multiply this vector by another vector.
+   * Warning: this vector is modified in place.
+   * 
+   * @param size
+   * @returns scaled vector
+   */
+  mutScale(size: number): Vector {
+    this.x *= size;
+    this.y *= size;
+    return this;
+  }
+
+  /**
    * Substract two vectors together and returns the resulting vector.
    *
    * @param  vector

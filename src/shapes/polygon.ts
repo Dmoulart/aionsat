@@ -21,39 +21,6 @@ export class Polygon extends Shape {
    */
   private _worldVertices: Vector[];
 
-  /**
-   * The axes of the polygon. The axes are normalized and perpendicular to the edges of the polygon.
-   *
-   */
-  private _axes: Vector[];
-
-  /**
-   * The axis projection of the polygon. We keep a reference to it so we do not have to instantiate a new 
-   * one each time we must calculate it.
-   * 
-   */
-  private _projection: Projection
-
-  /**
-   * The center of the polygon, in aboslute coordinates.
-   * 
-   */
-  private _centroid: Vector;
-
-  /**
-   * Specify if we must recalculate the vertices positions and the axes.
-   * It is triggered to false when they have been setted in the beginning of the 
-   * collision detection. It is then setted to true at the end of the collision detection.
-   * 
-   */
-  private _recalc: boolean;
-
-  /**
-   * The last position of the polygon. It includes its first vertex and last vertex for comparison
-   * 
-   */
-  private _lastPos: Vector
-
 
   constructor(vertices: ArrayOfThreeOrMore<Vector>, pos = Vector.origin) {
     super(pos);
@@ -67,20 +34,8 @@ export class Polygon extends Shape {
     // Preallocate the world vertices array.
     this._worldVertices = new Array(vertices.length).fill(0).map(() => new Vector());
 
-    // Preallocate the axes vertices array.
+    // Preallocate the axes array.
     this._axes = new Array(vertices.length).fill(0).map(() => new Vector());
-
-    // Initialize the projection instance we'll recycle.
-    this._projection = new Projection();
-
-    // Initialize the centroid instance we'll recycle.
-    this._centroid = new Vector();
-
-    // Initialize the recalc flag to true.
-    this._recalc = true;
-
-    // Initialize the last vector positions, first vertex and last vertex
-    this._lastPos = Vector.infinity
   }
 
   /**
@@ -127,34 +82,6 @@ export class Polygon extends Shape {
     return true;
   }
 
-  /**
-   * Calculate the vertices and axis of this polygon. If position has not been changed since last time this method has been called
-   * it will not recalculate the vertices and axes.
-   * 
-   * @returns vertices and axes
-   */
-  public calculate(): void {
-    if (this.hasMovedSinceLastCalc) {
-      // Set the last position to the current position.
-      this._lastPos = this._lastPos.copy(this.pos);
-
-      // The axes and vertices have to be re-calculated : set the recalc flag to true.
-      this._recalc = true;
-    }
-    else {
-      // The axes and vertices do not need to be calculated, we can set the recalc flag to false.
-      this._recalc = false;
-    }
-  }
-
-  /**
-   * Returns true if the polygon has moved since the last time it has caculated its vertices and axes.
-   * 
-   * @returns has changed position since last calculation
-   */
-  private get hasMovedSinceLastCalc(): boolean {
-    return this.pos.x !== this._lastPos.x || this.pos.y !== this._lastPos.y;
-  }
   /**
    * Returns the vertices absolute positions of the polygon.
    *
