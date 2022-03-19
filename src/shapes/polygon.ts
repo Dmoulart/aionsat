@@ -30,11 +30,13 @@ export class Polygon extends Shape {
   /**
    * The axis projection of the polygon. We keep a reference to it so we do not have to instantiate a new 
    * one each time we must calculate it.
+   * 
    */
   private _projection: Projection
 
   /**
    * The center of the polygon, in aboslute coordinates.
+   * 
    */
   private _centroid: Vector;
 
@@ -42,14 +44,23 @@ export class Polygon extends Shape {
    * Specify if we must recalculate the vertices positions and the axes.
    * It is triggered to false when they have been setted in the beginning of the 
    * collision detection. It is then setted to true at the end of the collision detection.
+   * 
    */
   private _recalc: boolean;
 
+  /**
+   * The last position of the polygon. It includes its first vertex and last vertex for comparison
+   * 
+   */
+  private _lastPos: Vector
+
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
-    if (vertices.length < 3) {
+
+    if (vertices.length < 3)
       throw new Error(`Polygon has been instanciated with less than 3 vertices.`);
-    }
+
+    // Affect the relative positions vertices.
     this._vertices = vertices;
 
     // Preallocate the world vertices array.
@@ -66,6 +77,9 @@ export class Polygon extends Shape {
 
     // Initialize the recalc flag to true.
     this._recalc = true;
+
+    // Initialize the last vector positions, first vertex and last vertex
+    this._lastPos = Vector.infinity
   }
 
   /**
@@ -112,6 +126,32 @@ export class Polygon extends Shape {
     return true;
   }
 
+  /**
+   * Calculate the vertices and axis of this polygon. If position has not been changed since last time this method has been called
+   * it will not recalculate the vertices and axes.
+   * 
+   * @returns vertices and axes
+   */
+  public calculate(): void {
+    if (this.hasMovedSinceLastCalc) {
+      this._lastPos = this._lastPos.copy(this.pos);
+
+      // Calculate axes and vertices
+      // todo: change getter to methods to make the calculation more explicit
+      [this.axes, this.vertices];
+
+      this.recalc = false;
+
+      return
+    }
+    this.recalc = false;
+
+    return
+  }
+
+  private get hasMovedSinceLastCalc(): boolean {
+    return this.pos.x !== this._lastPos.x || this.pos.y !== this._lastPos.y;
+  }
   /**
    * Returns the vertices absolute positions of the polygon.
    *

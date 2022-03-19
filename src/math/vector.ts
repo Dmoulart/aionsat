@@ -33,6 +33,15 @@ export class Vector {
   }
 
   /**
+   * Return a vector of infinite value.
+   *
+   * @returns zero vector
+   */
+  static get infinity(): Vector {
+    return new Vector(Infinity, Infinity);
+  }
+
+  /**
    * Multiply the two axes of a vector by a given number.
    *
    * @param size

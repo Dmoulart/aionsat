@@ -5,7 +5,7 @@ const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.in
 
 const square = new Box(100, 100, vec(200, 200));
 
-const shapes = generateShapes(800)
+const shapes = generateShapes(500)
 
 const circleA = new Circle(10, vec(200, 200));
 
@@ -28,20 +28,18 @@ let c
 
   //shapes.forEach((shape) => draw(shape))
   for (let i = 0; i < shapes.length; i++) {
-    shapes[i].pos = Math.random() > 0.5 ?
-      shapes[i].pos.add(vec(Math.random() * 2, Math.random() * 2))
-      : shapes[i].pos.add(vec(-Math.random() * 2, -Math.random() * 2))
+    if (Math.random() > 0.5) {
+      shapes[i].pos = Math.random() > 0.5 ?
+        shapes[i].pos.add(vec(Math.random() * 2, Math.random() * 2))
+        : shapes[i].pos.add(vec(-Math.random() * 2, -Math.random() * 2))
+    }
     for (let j = i + 1; j < shapes.length; j++) {
-
       const collision = sat.intersects(shapes[i], shapes[j])
-      // draw(shapes[i], collision && 'red')
-      // draw(shapes[j], collision && 'red')
-
     }
   }
-  counter(dt)
 
   dt = performance.now() - before;
+  counter(dt)
   before = performance.now()
 
   requestAnimationFrame(loop);
