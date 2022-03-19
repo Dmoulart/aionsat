@@ -4,10 +4,10 @@ import { ctx, drawPolygon, drawCircle, draw, counter } from './utils';
 const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
 
 const square = new Box(100, 100, vec(200, 200));
-const squareB = new Box(100, 100, vec(100, 100)); //new Circle(10, vec(200, 200));
+const circle = generateShapes(1, 'Circle')[0]; //new Circle(10, vec(200, 200));
 
-const shapes = [...generateShapes(500), squareB]
-
+const shapes = [...generateShapes(500, 'Box'), circle]
+console.log(shapes)
 document.onmousemove = (e: MouseEvent) => {
   square.pos = vec(e.clientX, e.clientY);
 };
@@ -20,11 +20,11 @@ let c
 (function loop() {
   ctx.clearRect(0, 0, innerWidth, innerHeight);
 
-  const collision = sat.intersects(square, squareB);
+  const collision = sat.intersects(square, circle);
 
   draw(square);
-  draw(squareB, collision ? 'red' : 'white');
-
+  draw(circle, collision ? 'red' : 'white');
+  let checks = 0
   //shapes.forEach((shape) => draw(shape))
   for (let i = 0; i < shapes.length; i++) {
     if (Math.random() > 0.5) {
@@ -32,22 +32,34 @@ let c
         shapes[i].pos.add(vec(2, 2))
         : shapes[i].pos.add(vec(- 2, - 2))
     }
-    for (let j = i + 1; j < shapes.length; j++) {
-      const collision = sat.intersects(shapes[i], shapes[j])
+    for (let j = 0; j < shapes.length; j++) {
+      if (i !== j) {
+        const collision = sat.intersects(shapes[i], shapes[j])
+        checks++
+      }
     }
   }
 
   dt = performance.now() - before;
   counter(dt)
   before = performance.now()
-
+  console.log('checks : ', checks)
   requestAnimationFrame(loop);
 })();
 
-function generateShapes(n: number = 10): Array<Shape> {
+function generateShapes(n: number = 10, shape: 'Box' | 'Circle' = 'Box'): Array<Shape> {
   const shapes = []
-  for (let i = 0; i < n; i++) {
-    shapes.push(new Box(100, 100, vec(Math.random() * window.innerWidth, Math.random() * window.innerHeight)))
+  const box = () => new Box(50, 50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
+  const circle = () => new Circle(50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
+  if (shape === 'Box') {
+    for (let i = 0; i < n; i++) {
+      shapes.push(box())
+    }
+  }
+  else if (shape === 'Circle') {
+    for (let i = 0; i < n; i++) {
+      shapes.push(circle())
+    }
   }
   return shapes
 }

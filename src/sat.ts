@@ -229,6 +229,9 @@ export class Sat {
    * @returns collision response
    */
   public polygonIntersectsCircle(a: Polygon, b: Circle): Collision | false {
+    // Determine if the polygons axes and vertices needs to be recalculated
+    a.calculate()
+
     let overlap: number = Number.MAX_VALUE;
     let normal: Vector = Vector.origin;
 
