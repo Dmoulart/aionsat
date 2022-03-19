@@ -121,6 +121,9 @@ export class Circle extends Shape {
   /**
    * Returns true if this circle contains another circle. We can provide a calculated distance
    * square root to improve performance.
+   * 
+   * 
+   * @todo Not in use for now delete it ?
    *
    * @param other
    * @param distanceSquareRoot
@@ -139,6 +142,8 @@ export class Circle extends Shape {
   /**
    * Returns true if this circle is contained inside another circle. We can provide a calculated distance
    * square root to improve performance.
+   * 
+   * @todo Not in use for now delete it ?
    *
    * @param other
    * @param distanceSquareRoot
@@ -211,6 +216,10 @@ export class Circle extends Shape {
    * @param radius
    */
   public set radius(radius: number) {
+    // Circle can not have a radius inferior to zero.
+    if (radius < 0) {
+      throw new Error(`Circle cannot have a radius of ${radius}. Radius cannot be less than zero.`);
+    }
     this._radius = radius;
   }
 }

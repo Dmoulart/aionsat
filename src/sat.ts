@@ -33,6 +33,12 @@ export class Sat {
   /**
    * The collision response object returned by the SAT intersection methods.
    * We use only one of it to avoid creating new objects for each collision.
+   * 
+   * /!\ This response is mutated at every intersection method call ! /!\ 
+   * /!\ If the last collision check was false, the response will not hold this "false" value, but the last truthy one ! /!\ 
+   * /!\ I strongly recommand to avoid accessing the response object from the class /!\
+   * /!\ If you need to store some collision response, clone the given response after a collision check /!\
+   * 
    */
   private _response: Collision | false = {
     a: new Circle(0, Vector.zero),
@@ -307,25 +313,13 @@ export class Sat {
 
     if (!response) return false;
 
-    return {
-      a,
-      b,
-      normal: response.normal.negate(),
-      overlap: response.overlap,
-      aInB: response.bInA,
-      bInA: response.aInB
-    };
+    (<Collision>this._response).a = a;
+    (<Collision>this._response).b = b;
+    (<Collision>this._response).normal = response.normal.mutNegate();
+    (<Collision>this._response).overlap = response.overlap;
+    (<Collision>this._response).aInB = response.bInA;
+    (<Collision>this._response).bInA = response.aInB;
+
+    return this._response
   }
-
-
-  /**
-   * The last collision response registered by the SAT collision detection.
-   * Warning : this response is mutated at every intersection method call
-   * 
-   * @return collision response or false if no collision has been detected
-   */
-  public get response(): Collision | false {
-    return this._response;
-  }
-
 }
