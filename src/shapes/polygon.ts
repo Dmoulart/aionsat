@@ -13,7 +13,7 @@ export class Polygon extends Shape {
    * The vertices in their relative positions.
    *
    */
-  private _vertices: Vector[] = [];
+  private _vertices: Vector[];
 
   /**
    * The vertices in their absolute positions.
@@ -55,7 +55,7 @@ export class Polygon extends Shape {
   private _lastPos: Vector
 
 
-  constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
+  constructor(vertices: ArrayOfThreeOrMore<Vector>, pos: Vector = Vector.origin) {
     super(pos);
 
     if (vertices.length < 3)
@@ -138,20 +138,13 @@ export class Polygon extends Shape {
       // Set the last position to the current position.
       this._lastPos = this._lastPos.copy(this.pos);
 
-      // Calculate axes and vertices
-      // @todo: change getter to methods to make the calculation more explicit or cache automatically on function calls..
-      [this.axes, this.vertices];
-
-      // The axes and vertices have been calculated, we can set the recalc flag to false.
-      this.recalc = false;
-
-      return
+      // The axes and vertices have to be re-calculated : set the recalc flag to true.
+      this.recalc = true;
     }
-
-    // The axes and vertices do not need to be calculated, we can set the recalc flag to false.
-    this.recalc = false;
-
-    return
+    else {
+      // The axes and vertices do not need to be calculated, we can set the recalc flag to false.
+      this.recalc = false;
+    }
   }
 
   /**
@@ -168,7 +161,7 @@ export class Polygon extends Shape {
    * @returns vertices absolute positions
    */
   public get vertices(): Vector[] {
-    // If the vertices do not need to be recalculated, we just reuse theù
+    // If the vertices do not need to be recalculated, we can just reuse them
     if (!this.recalc) return this._worldVertices;
 
     for (let i = 0; i < this._vertices.length; i++) {
@@ -223,7 +216,7 @@ export class Polygon extends Shape {
   public get centroid(): Vector {
     const vertices = this.vertices;
     const len = vertices.length;
-
+    // Reset the center to re-use it.
     this._centroid.set(0, 0)
 
     for (let i = 0; i < len; i++) {
@@ -256,3 +249,6 @@ export class Polygon extends Shape {
     this._recalc = mustRecalculate;
   }
 }
+
+// Polygon is a shape that is defined by a set of minimum 3 vertices.
+export type ArrayOfThreeOrMore<T> = [T, T, T, ...T[]];

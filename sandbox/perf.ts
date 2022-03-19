@@ -4,10 +4,9 @@ import { ctx, drawPolygon, drawCircle, draw, counter } from './utils';
 const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
 
 const square = new Box(100, 100, vec(200, 200));
+const squareB = new Box(100, 100, vec(100, 100)); //new Circle(10, vec(200, 200));
 
-const shapes = generateShapes(700)
-
-const circleA = new Circle(10, vec(200, 200));
+const shapes = [...generateShapes(1200), squareB]
 
 document.onmousemove = (e: MouseEvent) => {
   square.pos = vec(e.clientX, e.clientY);
@@ -21,17 +20,17 @@ let c
 (function loop() {
   ctx.clearRect(0, 0, innerWidth, innerHeight);
 
-  const collision = sat.intersects(square, circleA);
+  const collision = sat.intersects(square, squareB);
 
   draw(square);
-  draw(circleA, collision ? 'red' : 'white');
+  draw(squareB, collision ? 'red' : 'white');
 
   //shapes.forEach((shape) => draw(shape))
   for (let i = 0; i < shapes.length; i++) {
-    if (Math.random() > 0.999) {
+    if (Math.random() > 1) {
       shapes[i].pos = Math.random() > 0.5 ?
-        shapes[i].pos.add(vec(Math.random() * 2, Math.random() * 2))
-        : shapes[i].pos.add(vec(-Math.random() * 2, -Math.random() * 2))
+        shapes[i].pos.add(vec(2, 2))
+        : shapes[i].pos.add(vec(- 2, - 2))
     }
     for (let j = i + 1; j < shapes.length; j++) {
       const collision = sat.intersects(shapes[i], shapes[j])
