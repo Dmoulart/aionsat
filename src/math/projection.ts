@@ -16,7 +16,7 @@ export class Projection {
      *
      */
     public max = 0
-  ) { }
+  ) {}
 
   /**
    * Returns true if two projections overlap.
@@ -42,9 +42,9 @@ export class Projection {
 
   /**
    * Mutate the min and max values of the projection.
-   * 
-   * @param min 
-   * @param max 
+   *
+   * @param min
+   * @param max
    * @returns this projection
    */
   public set(min: number, max: number): this {

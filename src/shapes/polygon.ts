@@ -21,12 +21,10 @@ export class Polygon extends Shape {
    */
   private _worldVertices: Vector[];
 
-
   constructor(vertices: ArrayOfThreeOrMore<Vector>, pos = Vector.origin) {
     super(pos);
 
-    if (vertices.length < 3)
-      throw new Error(`Polygon has been instanciated with less than 3 vertices.`);
+    if (vertices.length < 3) throw new Error(`Polygon has been instanciated with less than 3 vertices.`);
 
     // Affect the relative positions vertices.
     this._vertices = vertices;
@@ -94,7 +92,7 @@ export class Polygon extends Shape {
     for (let i = 0; i < this._vertices.length; i++) {
       // Use the precedent world vertex instance to avoid creating new instances.
       this._worldVertices[i] = this._worldVertices[i]
-        .copy(this.pos)             // Get the current position.
+        .copy(this.pos) // Get the current position.
         .mutAdd(this._vertices[i]); // Add the vertex relative position.
     }
 
@@ -127,9 +125,9 @@ export class Polygon extends Shape {
       // Reuse the precedent axis instance to avoid creating new instances.
       this._axes[i] = this._axes[i]
         .copy(vertices[(i + 1) % len]) // Get the next vertex.
-        .mutSub(vertices[i])           // Substract the next vertex with the current vertex.
-        .mutPerp()                     // Get the perpendicular vector.
-        .mutNorm()                     // Normalize it to get the unit vector
+        .mutSub(vertices[i]) // Substract the next vertex with the current vertex.
+        .mutPerp() // Get the perpendicular vector.
+        .mutNorm(); // Normalize it to get the unit vector
     }
 
     return this._axes;
@@ -148,7 +146,7 @@ export class Polygon extends Shape {
     const len = vertices.length;
 
     // Reset the center to re-use it.
-    this._centroid.set(0, 0)
+    this._centroid.set(0, 0);
 
     for (let i = 0; i < len; i++) {
       this._centroid.mutAdd(vertices[i]);
@@ -163,14 +161,13 @@ export class Polygon extends Shape {
   }
 
   /**
-   * Returns true if the vertices and polygon axes must be recalculated. 
-   * 
+   * Returns true if the vertices and polygon axes must be recalculated.
+   *
    * @returns must recalculate
    */
   public get recalc(): boolean {
     return this._recalc;
   }
-
 }
 
 // Polygon is a shape that is defined by a set of minimum 3 vertices.

@@ -29,16 +29,15 @@ export type Collision = {
  *
  */
 export class Sat {
-
   /**
    * The collision response object returned by the SAT intersection methods.
    * We use only one of it to avoid creating new objects for each collision.
-   * 
-   * /!\ This response is mutated at every intersection method call ! /!\ 
-   * /!\ If the last collision check was false, the response will not hold this "false" value, but the last truthy one ! /!\ 
+   *
+   * /!\ This response is mutated at every intersection method call ! /!\
+   * /!\ If the last collision check was false, the response will not hold this "false" value, but the last truthy one ! /!\
    * /!\ I strongly recommand to avoid accessing the response object from the class /!\
    * /!\ If you need to store some collision response, clone the given response after a collision check /!\
-   * 
+   *
    */
   private _response: Collision | false = {
     a: new Circle(0, Vector.zero),
@@ -46,7 +45,7 @@ export class Sat {
     normal: Vector.zero,
     overlap: 0,
     aInB: false,
-    bInA: false,
+    bInA: false
   };
 
   /**
@@ -81,8 +80,8 @@ export class Sat {
    */
   public polygonIntersectsPolgon(a: Polygon, b: Polygon): Collision | false {
     // Determine if the polygons axes and vertices needs to be recalculated
-    a.calculate()
-    b.calculate()
+    a.calculate();
+    b.calculate();
 
     // Get the axes of the two polygons
     // By doing so we also calculate their vertices global positions and cache them
@@ -173,8 +172,7 @@ export class Sat {
     }
 
     // If the smallest penetration normal points into shape b flip it
-    if (a.centroid.sub(b.centroid).dot(normal) < 0)
-      normal.mutNegate();
+    if (a.centroid.sub(b.centroid).dot(normal) < 0) normal.mutNegate();
 
     return this.setResponse(a, b, normal, overlap, aInB, bInA);
   }
@@ -221,8 +219,8 @@ export class Sat {
    */
   public polygonIntersectsCircle(a: Polygon, b: Circle): Collision | false {
     // Determine if the polygons and circles axes, projections and vertices needs to be recalculated
-    a.calculate()
-    b.calculate()
+    a.calculate();
+    b.calculate();
 
     let overlap: number = Number.MAX_VALUE;
     let normal: Vector = Vector.origin;
@@ -302,22 +300,25 @@ export class Sat {
   }
 
   /**
-   * Set the collision response and return it. 
+   * Set the collision response and return it.
    * Affecting each property makes us avoiding instantiating another object. It seems to
    * be a little bit faster this way.
-   * 
-   * @param a 
-   * @param b 
-   * @param normal 
-   * @param overlap 
-   * @param aInB 
-   * @param bInA 
+   *
+   * @param a
+   * @param b
+   * @param normal
+   * @param overlap
+   * @param aInB
+   * @param bInA
    * @returns collision
    */
   private setResponse<Shape1 extends Shape, Shape2 extends Shape>(
-    a: Shape1, b: Shape2,
-    normal: Vector, overlap: number,
-    aInB: boolean, bInA: boolean
+    a: Shape1,
+    b: Shape2,
+    normal: Vector,
+    overlap: number,
+    aInB: boolean,
+    bInA: boolean
   ): Collision {
     (<Collision>this._response).a = a;
     (<Collision>this._response).b = b;

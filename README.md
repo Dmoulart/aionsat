@@ -1,6 +1,6 @@
 # AIONSAT
 
-A simple implementation of the Separation Axis Theorem.
+An implementation of the Separation Axis Theorem.
 This package is intended to be a learning project inspired by sat.js and dyn4j posts on Sat Theorem (https://dyn4j.org/2010/01/sat/#sat-mtv).
 
 # Installation
@@ -8,8 +8,3 @@ This package is intended to be a learning project inspired by sat.js and dyn4j p
 `npm i aionsat`
 
 `yarn add aionsat`
-
-# Perfs
-
-branch -> perf-b : optimize and mutates
--> autocalc : based on perf-b cache vertices and axes

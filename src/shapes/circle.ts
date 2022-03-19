@@ -7,10 +7,9 @@ import { Shape } from './shape';
  *
  */
 export class Circle extends Shape {
-
   /**
    * The circle's radius.
-   * 
+   *
    */
   private _radius: number;
 
@@ -41,7 +40,7 @@ export class Circle extends Shape {
     radius = 50,
     /**
      * The circle's center.
-     * 
+     *
      */
     pos = Vector.origin
   ) {
@@ -50,17 +49,17 @@ export class Circle extends Shape {
     if (radius < 0) {
       throw new Error(`Circle was instantiated with a radius of ${radius}. Radius cannot be less than zero.`);
     }
-    this._radius = radius
+    this._radius = radius;
 
     // Initialize the projection direction and radius.
-    this._projectionDirectionAndRadius = Vector.infinity
+    this._projectionDirectionAndRadius = Vector.infinity;
 
     // Initialize the projection points
-    this._projectionPoint1 = Vector.infinity
-    this._projectionPoint2 = Vector.infinity
+    this._projectionPoint1 = Vector.infinity;
+    this._projectionPoint2 = Vector.infinity;
 
     // Initialize the distance points
-    this._distance = Vector.infinity
+    this._distance = Vector.infinity;
   }
 
   /**
@@ -70,23 +69,17 @@ export class Circle extends Shape {
    * @returns projection
    */
   public project(axis: Vector): Projection {
-    this._projectionDirectionAndRadius
-      .copy(axis)
-      .mutScale(this.radius);
+    this._projectionDirectionAndRadius.copy(axis).mutScale(this.radius);
 
-    this._projectionPoint1
-      .copy(this.pos)
-      .mutAdd(this._projectionDirectionAndRadius);
+    this._projectionPoint1.copy(this.pos).mutAdd(this._projectionDirectionAndRadius);
 
-    this._projectionPoint2
-      .copy(this.pos)
-      .mutSub(this._projectionDirectionAndRadius);
+    this._projectionPoint2.copy(this.pos).mutSub(this._projectionDirectionAndRadius);
 
     let min = this._projectionPoint1.dot(axis);
     let max = this._projectionPoint2.dot(axis);
 
     if (min > max) {
-      // Swap the values 
+      // Swap the values
       [min, max] = [max, min];
     }
 
@@ -115,14 +108,14 @@ export class Circle extends Shape {
       }
     }
 
-    return vertexIndex
+    return vertexIndex;
   }
 
   /**
    * Returns true if this circle contains another circle. We can provide a calculated distance
    * square root to improve performance.
-   * 
-   * 
+   *
+   *
    * @todo Not in use for now delete it ?
    *
    * @param other
@@ -142,7 +135,7 @@ export class Circle extends Shape {
   /**
    * Returns true if this circle is contained inside another circle. We can provide a calculated distance
    * square root to improve performance.
-   * 
+   *
    * @todo Not in use for now delete it ?
    *
    * @param other
@@ -166,9 +159,7 @@ export class Circle extends Shape {
    * @returns contains point
    */
   public containsPoint(point: Vector): boolean {
-    this._distance
-      .copy(point)
-      .mutSub(this.pos);
+    this._distance.copy(point).mutSub(this.pos);
     const distanceSquared = this._distance.dot(this._distance);
     return distanceSquared <= this._radius * this._radius;
   }
@@ -203,7 +194,7 @@ export class Circle extends Shape {
 
   /**
    * Get the circle's radius
-   * 
+   *
    * @returns circle's radius
    */
   public get radius(): number {
@@ -212,7 +203,7 @@ export class Circle extends Shape {
 
   /**
    * Set the circle's radius
-   * 
+   *
    * @param radius
    */
   public set radius(radius: number) {

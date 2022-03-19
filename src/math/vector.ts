@@ -12,7 +12,7 @@ export class Vector {
      * The Y value represents the vertical axis.
      */
     public y = 0
-  ) { }
+  ) {}
 
   /**
    * Return a vector of value zero, representing the origin of the coordinate system.
@@ -29,7 +29,7 @@ export class Vector {
    * @returns zero vector
    */
   static get zero(): Vector {
-    return Vector.origin
+    return Vector.origin;
   }
 
   /**
@@ -54,7 +54,7 @@ export class Vector {
   /**
    * Multiply this vector by another vector.
    * Warning: this vector is modified in place.
-   * 
+   *
    * @param size
    * @returns scaled vector
    */
@@ -75,12 +75,12 @@ export class Vector {
   }
 
   /**
-  * Substract another vector with this one and return this one for chaining.
-  * Warning: this vector is modified in place.
-  *
-  * @param  vector
-  * @returns this vector
-  */
+   * Substract another vector with this one and return this one for chaining.
+   * Warning: this vector is modified in place.
+   *
+   * @param  vector
+   * @returns this vector
+   */
   mutSub(vector: Vector): this {
     this.x -= vector.x;
     this.y -= vector.y;
@@ -98,12 +98,12 @@ export class Vector {
   }
 
   /**
-  * Add another vector to this one and return this one for chaining.
-  * Warning: this vector is modified in place.
-  *
-  * @param  vector
-  * @returns this vector
-  */
+   * Add another vector to this one and return this one for chaining.
+   * Warning: this vector is modified in place.
+   *
+   * @param  vector
+   * @returns this vector
+   */
   mutAdd(vector: Vector): this {
     this.x += vector.x;
     this.y += vector.y;
@@ -121,12 +121,12 @@ export class Vector {
   }
 
   /**
-  * Divide another vector with this one and return this one for chaining.
-  * Warning: this vector is modified in place.
-  *
-  * @param  vector
-  * @returns this vector
-  */
+   * Divide another vector with this one and return this one for chaining.
+   * Warning: this vector is modified in place.
+   *
+   * @param  vector
+   * @returns this vector
+   */
   mutDiv(vector: Vector): this {
     this.x /= vector.x;
     this.y /= vector.y;
@@ -143,11 +143,11 @@ export class Vector {
   }
 
   /**
-  * Make this vector negative.
-  * Warning: this vector is modified in place.
-  *
-  * @returns this vector
-  */
+   * Make this vector negative.
+   * Warning: this vector is modified in place.
+   *
+   * @returns this vector
+   */
   mutNegate(): this {
     this.x *= -1;
     this.y *= -1;
@@ -165,11 +165,11 @@ export class Vector {
   }
 
   /**
-  * Multiply this vector by another one.
-  * Warning: this vector is modified in place.
-  *
-  * @returns this vector
-  */
+   * Multiply this vector by another one.
+   * Warning: this vector is modified in place.
+   *
+   * @returns this vector
+   */
   mutMult(vector: Vector): this {
     this.x *= vector.x;
     this.y *= vector.y;
@@ -203,11 +203,11 @@ export class Vector {
   }
 
   /**
-  * Normalize this vector.
-  * Warning: this vector is modified in place.
-  *
-  * @returns this vector
-  */
+   * Normalize this vector.
+   * Warning: this vector is modified in place.
+   *
+   * @returns this vector
+   */
   mutNorm(): this {
     const mag = this.mag();
     if (mag > 0) {
@@ -279,7 +279,7 @@ export class Vector {
   copy(vector: Vector): this {
     this.x = vector.x;
     this.y = vector.y;
-    return this
+    return this;
   }
 
   /**
@@ -292,9 +292,8 @@ export class Vector {
   set(x: number, y: number = x): this {
     this.x = x;
     this.y = y;
-    return this
+    return this;
   }
-
 }
 
 // A shortcut function to instantiate vector
@@ -302,4 +301,4 @@ export function vec(x = 0, y = x): Vector {
   return new Vector(x, y);
 }
 
-export const Vectors = new Array<Vector>(20).fill(new Vector)
+export const Vectors = new Array<Vector>(20).fill(new Vector());
