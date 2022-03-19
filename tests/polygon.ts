@@ -54,4 +54,53 @@ describe('Polygon', function () {
       assert.equal(centroid.y, 33);
     });
   });
+
+  describe('recalc', function () {
+    it('should cache the global vertices positions if the polygon has not moved since last time it calculated it', function () {
+      const rectangle = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(0, 0)
+      );
+
+      const triangle = new Polygon([new Vector(0, 0), new Vector(100, 0), new Vector(50, 99)], new Vector(0, 0));
+
+      const sat = new Sat()
+
+      sat.intersects(rectangle, triangle);
+
+      // Rectangle last position was unknown (just instantiated) before the intersection 
+      // so it has been registered now. Next check the recalc will be setted to false
+      assert.equal(rectangle.recalc, true);
+
+      sat.intersects(rectangle, triangle);
+
+      // The rectangle position hasn't changed so the recalc should have been setted to false at the beginning of the collision check
+      assert.equal(rectangle.recalc, false);
+
+    });
+    it('should recalculate the global vertices positions if the polygon has moved since last time', function () {
+      const rectangle = new Polygon(
+        [new Vector(0, 0), new Vector(10, 0), new Vector(10, 10), new Vector(0, 10)],
+        new Vector(0, 0)
+      );
+
+      const triangle = new Polygon([new Vector(0, 0), new Vector(100, 0), new Vector(50, 99)], new Vector(0, 0));
+
+      const sat = new Sat()
+
+      sat.intersects(rectangle, triangle);
+
+      // Rectangle last position was unknown (just instantiated) before the intersection so it has been registered now.
+      assert.equal(rectangle.recalc, true);
+
+      // Move the rectangle
+      rectangle.pos = new Vector(10, 10);
+
+      sat.intersects(rectangle, triangle);
+
+      // The rectangle position has changed so the recalc should have been setted to true at the beginning of the collision
+      assert.equal(rectangle.recalc, true);
+
+    });
+  });
 });
