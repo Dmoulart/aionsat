@@ -216,14 +216,14 @@ export class Sat {
     const aInB = a.radius <= b.radius && distanceSquareRoot <= b.radius - a.radius;
     const bInA = b.radius <= a.radius && distanceSquareRoot <= a.radius - b.radius;
 
-    return {
-      a,
-      b,
-      normal,
-      overlap,
-      aInB: aInB,
-      bInA: bInA
-    };
+    (<Collision>this._response).a = a;
+    (<Collision>this._response).b = b;
+    (<Collision>this._response).normal = normal;
+    (<Collision>this._response).overlap = overlap;
+    (<Collision>this._response).aInB = aInB;
+    (<Collision>this._response).bInA = bInA;
+
+    return this._response
   }
 
   /**

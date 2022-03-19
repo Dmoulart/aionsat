@@ -6,7 +6,7 @@ const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.in
 const square = generateShapes(1, 'Circle')[0];
 const circle = generateShapes(1, 'Circle')[0]; //new Circle(10, vec(200, 200));
 
-const shapes = [...generateShapes(1000, 'Circle'), circle]
+const shapes = [...generateShapes(1500, 'Circle'), circle]
 console.log(shapes)
 document.onmousemove = (e: MouseEvent) => {
   square.pos = vec(e.clientX, e.clientY);
