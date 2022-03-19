@@ -15,14 +15,21 @@ export class Circle extends Shape {
   private _radius: number;
 
   constructor(
-    radius = 10,
+    /**
+     * Circle's have a default radius of 50.
+     */
+    radius = 50,
     /**
      * The circle's center.
-     *
+     * 
      */
-    public pos: Vector = Vector.origin
+    pos = Vector.origin
   ) {
     super(pos);
+    // Circle can not have a radius inferior to zero.
+    if (radius < 0) {
+      throw new Error(`Circle was instantiated with a radius of ${radius}. Radius cannot be less than zero.`);
+    }
     this._radius = radius
   }
 

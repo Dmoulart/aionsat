@@ -55,7 +55,7 @@ export class Polygon extends Shape {
   private _lastPos: Vector
 
 
-  constructor(vertices: ArrayOfThreeOrMore<Vector>, pos: Vector = Vector.origin) {
+  constructor(vertices: ArrayOfThreeOrMore<Vector>, pos = Vector.origin) {
     super(pos);
 
     if (vertices.length < 3)
