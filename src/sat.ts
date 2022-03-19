@@ -74,11 +74,7 @@ export class Sat {
    * @returns collision response
    */
   public polygonIntersectsPolgon(a: Polygon, b: Polygon): Collision | false {
-    // We must inform the polygons to recalculate their axes and vertices for the next time they 
-    // will be called
-    // a.recalc = true;
-    // b.recalc = true;
-
+    // Calculate vertices and axes of the polygons and cache the result
     a.calculate()
     b.calculate()
 
@@ -90,13 +86,8 @@ export class Sat {
     const lenA = axesA.length;
     const lenB = axesB.length;
 
-    // The axes and vertices of the polygons have been calculated at this point
-    // and will not move during the collision detection
-    // a.recalc = false
-    // b.recalc = false
-
     let overlap = Number.MAX_VALUE;
-    let normal: Vector = Vector.origin;
+    let normal = Vector.origin;
 
     let aInB = true;
     let bInA = true;

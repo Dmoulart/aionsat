@@ -5,7 +5,7 @@ const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.in
 
 const square = new Box(100, 100, vec(200, 200));
 
-const shapes = generateShapes(500)
+const shapes = generateShapes(700)
 
 const circleA = new Circle(10, vec(200, 200));
 
@@ -28,7 +28,7 @@ let c
 
   //shapes.forEach((shape) => draw(shape))
   for (let i = 0; i < shapes.length; i++) {
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.999) {
       shapes[i].pos = Math.random() > 0.5 ?
         shapes[i].pos.add(vec(Math.random() * 2, Math.random() * 2))
         : shapes[i].pos.add(vec(-Math.random() * 2, -Math.random() * 2))

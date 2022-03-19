@@ -54,6 +54,7 @@ export class Polygon extends Shape {
    */
   private _lastPos: Vector
 
+
   constructor(vertices: Vector[] = [], pos: Vector = Vector.origin) {
     super(pos);
 
@@ -134,21 +135,30 @@ export class Polygon extends Shape {
    */
   public calculate(): void {
     if (this.hasMovedSinceLastCalc) {
+      // Set the last position to the current position.
       this._lastPos = this._lastPos.copy(this.pos);
 
       // Calculate axes and vertices
-      // todo: change getter to methods to make the calculation more explicit
+      // @todo: change getter to methods to make the calculation more explicit or cache automatically on function calls..
       [this.axes, this.vertices];
 
+      // The axes and vertices have been calculated, we can set the recalc flag to false.
       this.recalc = false;
 
       return
     }
+
+    // The axes and vertices do not need to be calculated, we can set the recalc flag to false.
     this.recalc = false;
 
     return
   }
 
+  /**
+   * Returns true if the polygon has moved since the last time it has caculated its vertices and axes.
+   * 
+   * @returns has changed position since last calculation
+   */
   private get hasMovedSinceLastCalc(): boolean {
     return this.pos.x !== this._lastPos.x || this.pos.y !== this._lastPos.y;
   }
