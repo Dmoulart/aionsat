@@ -7,13 +7,15 @@ import { Shape } from './shape';
  *
  */
 export class Circle extends Shape {
-  constructor(
-    /**
-     * The circle's radius.
-     *
-     */
-    public radius: number,
 
+  /**
+   * The circle's radius.
+   * 
+   */
+  private _radius: number;
+
+  constructor(
+    radius = 10,
     /**
      * The circle's center.
      *
@@ -21,6 +23,7 @@ export class Circle extends Shape {
     public pos: Vector = Vector.origin
   ) {
     super(pos);
+    this._radius = radius
   }
 
   /**
@@ -87,7 +90,7 @@ export class Circle extends Shape {
       distanceSquareRoot = Math.sqrt(distanceSquared);
     }
 
-    return this.radius <= other.radius && distanceSquareRoot <= other.radius - this.radius;
+    return this._radius <= other._radius && distanceSquareRoot <= other._radius - this._radius;
   }
 
   /**
@@ -105,7 +108,7 @@ export class Circle extends Shape {
       distanceSquareRoot = Math.sqrt(distanceSquared);
     }
 
-    return other.radius <= this.radius && distanceSquareRoot <= this.radius - other.radius;
+    return other._radius <= this._radius && distanceSquareRoot <= this._radius - other._radius;
   }
 
   /**
@@ -117,7 +120,7 @@ export class Circle extends Shape {
   public containsPoint(point: Vector): boolean {
     const distance = point.sub(this.pos);
     const distanceSquared = distance.dot(distance);
-    return distanceSquared <= this.radius * this.radius;
+    return distanceSquared <= this._radius * this._radius;
   }
 
   /**
@@ -146,5 +149,23 @@ export class Circle extends Shape {
     //         return false
     // }
     // return this.radius < min
+  }
+
+  /**
+   * Get the circle's radius
+   * 
+   * @returns circle's radius
+   */
+  public get radius(): number {
+    return this._radius;
+  }
+
+  /**
+   * Set the circle's radius
+   * 
+   * @param radius
+   */
+  public set radius(radius: number) {
+    this._radius = radius;
   }
 }
