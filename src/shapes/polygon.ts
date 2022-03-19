@@ -86,8 +86,9 @@ export class Polygon extends Shape {
    * @returns vertices absolute positions
    */
   public get vertices(): Vector[] {
+    // @todo : this seems to cause bugs in physics simulations. Polygon not updating its position correctly
     // If the vertices do not need to be recalculated, we can just reuse them
-    if (!this.recalc) return this._worldVertices;
+    // if (!this.recalc) return this._worldVertices;
 
     for (let i = 0; i < this._vertices.length; i++) {
       // Use the precedent world vertex instance to avoid creating new instances.
