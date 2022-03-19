@@ -250,15 +250,15 @@ export class Sat {
       if (!projectionA.overlap(projectionB)) {
         return false;
       } else {
-        const overlapValue = projectionA.getOverlap(projectionB);
-        if (overlapValue < overlap) {
-          overlap = overlapValue;
+        const o = projectionA.getOverlap(projectionB);
+        if (o < overlap) {
+          overlap = o;
           normal = axis;
         }
       }
     }
 
-    const { vertexIndex } = b.findClosestPolygonPoint(a);
+    const vertexIndex = b.findClosestPolygonPoint(a);
     const closestPoint = a.vertices[vertexIndex];
 
     const axis = closestPoint.sub(b.pos).norm();
@@ -269,29 +269,29 @@ export class Sat {
     if (!projectionA.overlap(projectionB)) {
       return false;
     } else {
-      const overlapValue = projectionA.getOverlap(projectionB);
+      const o = projectionA.getOverlap(projectionB);
 
-      if (overlapValue < overlap) {
-        overlap = overlapValue;
+      if (o < overlap) {
+        overlap = o;
         normal = axis;
       }
     }
 
-    if (a.centroid.sub(b.pos).dot(normal) < 0) normal = normal.negate();
+    if (a.centroid.sub(b.pos).dot(normal) < 0) normal.mutNegate();
 
     aInB = a.isInsideCircle(b);
 
-    // This method is not implemented for now
+    // This method (Circle is in Polygon) is not implemented for now
     bInA = false;
 
-    return {
-      a,
-      b,
-      normal,
-      overlap,
-      aInB,
-      bInA
-    };
+    (<Collision>this._response).a = a;
+    (<Collision>this._response).b = b;
+    (<Collision>this._response).normal = normal;
+    (<Collision>this._response).overlap = overlap;
+    (<Collision>this._response).aInB = aInB;
+    (<Collision>this._response).bInA = bInA;
+
+    return this._response
   }
 
   /**

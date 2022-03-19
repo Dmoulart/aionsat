@@ -29,6 +29,11 @@ export class Circle extends Shape {
    */
   private _projectionPoint2: Vector;
 
+  /**
+   *  The distance attribute has no particular object it only reserve one vector instance to perform distance calculation.
+   */
+  private _distance: Vector;
+
   constructor(
     /**
      * Circle's have a default radius of 50.
@@ -53,6 +58,9 @@ export class Circle extends Shape {
     // Initialize the projection points
     this._projectionPoint1 = Vector.infinity
     this._projectionPoint2 = Vector.infinity
+
+    // Initialize the distance points
+    this._distance = Vector.infinity
   }
 
   /**
@@ -89,9 +97,9 @@ export class Circle extends Shape {
    * Find the closest point on the polygon from the circle's center.
    *
    * @param polygon
-   * @returns closest point
+   * @returns vertexIndex
    */
-  public findClosestPolygonPoint(polygon: Polygon): { minDistance: number; vertexIndex: number } {
+  public findClosestPolygonPoint(polygon: Polygon): number {
     const vertices = polygon.vertices;
     const len = vertices.length;
 
@@ -99,7 +107,7 @@ export class Circle extends Shape {
     let minDistance = Infinity;
 
     for (let i = 0; i < len; i++) {
-      const distance = this.pos.sub(vertices[i]).mag();
+      const distance = this._distance.copy(this.pos).mutSub(vertices[i]).mag();
 
       if (distance < minDistance) {
         minDistance = distance;
@@ -107,7 +115,7 @@ export class Circle extends Shape {
       }
     }
 
-    return { minDistance, vertexIndex };
+    return vertexIndex
   }
 
   /**
@@ -153,8 +161,10 @@ export class Circle extends Shape {
    * @returns contains point
    */
   public containsPoint(point: Vector): boolean {
-    const distance = point.sub(this.pos);
-    const distanceSquared = distance.dot(distance);
+    this._distance
+      .copy(point)
+      .mutSub(this.pos);
+    const distanceSquared = this._distance.dot(this._distance);
     return distanceSquared <= this._radius * this._radius;
   }
 
