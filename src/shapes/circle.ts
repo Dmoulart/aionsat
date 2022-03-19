@@ -78,7 +78,7 @@ export class Circle extends Shape {
     let max = this._projectionPoint2.dot(axis);
 
     if (min > max) {
-      // Swap the values if the points are in the wrong order.
+      // Swap the values 
       [min, max] = [max, min];
     }
 

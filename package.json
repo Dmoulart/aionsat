@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{ts,js}\"",
     "build": "tsc -p tsconfig.json",
     "watch": "tsc --w",
-    "dev": "parcel serve ./sandbox/perf.html",
+    "dev": "parcel serve ./sandbox/perf.html --no-cache",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
     "prepare": "yarn build && yarn format && yarn test"
   },
