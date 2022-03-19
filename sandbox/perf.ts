@@ -1,5 +1,5 @@
 import { Polygon, Sat, vec, Vector, Box, Circle, Shape } from '../dist';
-import { ctx, drawPolygon, drawCircle, draw, counter } from './utils';
+import { ctx, drawPolygon, drawCircle, draw, counter, generateShapes } from './utils';
 
 const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
 
@@ -44,19 +44,3 @@ let c;
   console.log('checks : ', checks);
   requestAnimationFrame(loop);
 })();
-
-function generateShapes(n: number = 10, shape: 'Box' | 'Circle' = 'Box'): Array<Shape> {
-  const shapes = [];
-  const box = () => new Box(50, 50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
-  const circle = () => new Circle(50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
-  if (shape === 'Box') {
-    for (let i = 0; i < n; i++) {
-      shapes.push(box());
-    }
-  } else if (shape === 'Circle') {
-    for (let i = 0; i < n; i++) {
-      shapes.push(circle());
-    }
-  }
-  return shapes;
-}

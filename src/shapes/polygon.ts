@@ -139,8 +139,7 @@ export class Polygon extends Shape {
    * @returns centroid
    */
   public get centroid(): Vector {
-    // If the vertices do not need to be recalculated, we just reuse them
-    if (!this.recalc) return this._centroid;
+    // @todo : cache this method
 
     const vertices = this.vertices;
     const len = vertices.length;

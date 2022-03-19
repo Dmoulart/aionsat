@@ -1,9 +1,9 @@
 import { Polygon, Sat, vec, Vector, Box, Circle, Shape } from '../dist';
-import { ctx, draw } from './utils';
+import { ctx, draw, generateShapes } from './utils';
 
 // Instantiate user polygon
 const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.innerWidth / 2, window.innerHeight / 2));
-
+const shapes = [...generateShapes(10, 'Circle'), ...generateShapes(40, 'Box')];
 // Instantiate other shapes
 const square = new Box(100, 100, vec(200, 200));
 
@@ -25,6 +25,14 @@ const sat = new Sat();
   draw(square);
 
   draw(circleA, collision ? 'red' : 'white');
+
+  shapes.forEach((shape) => {
+    const collision = sat.intersects(square, shape);
+    if (collision) {
+      shape.pos = shape.pos.sub(collision.normal.scale(collision.overlap));
+    }
+    draw(shape, collision ? 'red' : 'white');
+  });
 
   requestAnimationFrame(loop);
 })();

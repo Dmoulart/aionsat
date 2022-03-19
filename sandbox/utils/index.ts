@@ -1,4 +1,4 @@
-import { Vector, Shape, Polygon, Circle } from '../../dist';
+import { Vector, Shape, Polygon, Circle, Box, vec } from '../../dist';
 
 // Create canvas
 export const ctx = canvas();
@@ -69,4 +69,19 @@ export function counter(time: number = 0, id = 'counter') {
   if (this.i % 4 === 0) {
     document.getElementById(id).innerHTML = `${time.toFixed()} ms`;
   }
+}
+export function generateShapes(n: number = 10, shape: 'Box' | 'Circle' = 'Box'): Array<Shape> {
+  const shapes = [];
+  const box = () => new Box(50, 50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
+  const circle = () => new Circle(50, vec(Math.random() * innerWidth, Math.random() * innerHeight));
+  if (shape === 'Box') {
+    for (let i = 0; i < n; i++) {
+      shapes.push(box());
+    }
+  } else if (shape === 'Circle') {
+    for (let i = 0; i < n; i++) {
+      shapes.push(circle());
+    }
+  }
+  return shapes;
 }
