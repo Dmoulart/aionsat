@@ -176,15 +176,7 @@ export class Sat {
     if (a.centroid.sub(b.centroid).dot(normal) < 0)
       normal.mutNegate();
 
-    // This seems to be a little faster than affecting the object directly
-    (<Collision>this._response).a = a;
-    (<Collision>this._response).b = b;
-    (<Collision>this._response).normal = normal;
-    (<Collision>this._response).overlap = overlap;
-    (<Collision>this._response).aInB = aInB;
-    (<Collision>this._response).bInA = bInA;
-
-    return this._response
+    return this.setResponse(a, b, normal, overlap, aInB, bInA);
   }
 
   /**
@@ -216,14 +208,7 @@ export class Sat {
     const aInB = a.radius <= b.radius && distanceSquareRoot <= b.radius - a.radius;
     const bInA = b.radius <= a.radius && distanceSquareRoot <= a.radius - b.radius;
 
-    (<Collision>this._response).a = a;
-    (<Collision>this._response).b = b;
-    (<Collision>this._response).normal = normal;
-    (<Collision>this._response).overlap = overlap;
-    (<Collision>this._response).aInB = aInB;
-    (<Collision>this._response).bInA = bInA;
-
-    return this._response
+    return this.setResponse(a, b, normal, overlap, aInB, bInA);
   }
 
   /**
@@ -290,14 +275,7 @@ export class Sat {
     // This method (Circle is in Polygon) is not implemented for now
     bInA = false;
 
-    (<Collision>this._response).a = a;
-    (<Collision>this._response).b = b;
-    (<Collision>this._response).normal = normal;
-    (<Collision>this._response).overlap = overlap;
-    (<Collision>this._response).aInB = aInB;
-    (<Collision>this._response).bInA = bInA;
-
-    return this._response
+    return this.setResponse(a, b, normal, overlap, aInB, bInA);
   }
 
   /**
@@ -320,6 +298,34 @@ export class Sat {
     (<Collision>this._response).aInB = response.bInA;
     (<Collision>this._response).bInA = response.aInB;
 
-    return this._response
+    return this.setResponse(a, b, response.normal.mutNegate(), response.overlap, response.bInA, response.aInB);
+  }
+
+  /**
+   * Set the collision response and return it. 
+   * Affecting each property makes us avoiding instantiating another object. It seems to
+   * be a little bit faster this way.
+   * 
+   * @param a 
+   * @param b 
+   * @param normal 
+   * @param overlap 
+   * @param aInB 
+   * @param bInA 
+   * @returns collision
+   */
+  private setResponse<Shape1 extends Shape, Shape2 extends Shape>(
+    a: Shape1, b: Shape2,
+    normal: Vector, overlap: number,
+    aInB: boolean, bInA: boolean
+  ): Collision {
+    (<Collision>this._response).a = a;
+    (<Collision>this._response).b = b;
+    (<Collision>this._response).normal = normal;
+    (<Collision>this._response).overlap = overlap;
+    (<Collision>this._response).aInB = aInB;
+    (<Collision>this._response).bInA = bInA;
+
+    return <Collision>this._response;
   }
 }
