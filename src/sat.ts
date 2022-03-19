@@ -74,7 +74,7 @@ export class Sat {
    * @returns collision response
    */
   public polygonIntersectsPolgon(a: Polygon, b: Polygon): Collision | false {
-    // Calculate vertices and axes of the polygons and cache the result
+    // Determine if the polygons axes and vertices needs to be recalculated
     a.calculate()
     b.calculate()
 

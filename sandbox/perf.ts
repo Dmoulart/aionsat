@@ -6,7 +6,7 @@ const polyA = new Polygon([vec(0, 0), vec(100, 0), vec(100, 100)], vec(window.in
 const square = new Box(100, 100, vec(200, 200));
 const squareB = new Box(100, 100, vec(100, 100)); //new Circle(10, vec(200, 200));
 
-const shapes = [...generateShapes(1200), squareB]
+const shapes = [...generateShapes(500), squareB]
 
 document.onmousemove = (e: MouseEvent) => {
   square.pos = vec(e.clientX, e.clientY);
@@ -27,7 +27,7 @@ let c
 
   //shapes.forEach((shape) => draw(shape))
   for (let i = 0; i < shapes.length; i++) {
-    if (Math.random() > 1) {
+    if (Math.random() > 0.5) {
       shapes[i].pos = Math.random() > 0.5 ?
         shapes[i].pos.add(vec(2, 2))
         : shapes[i].pos.add(vec(- 2, - 2))

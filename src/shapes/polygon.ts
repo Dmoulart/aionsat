@@ -139,11 +139,11 @@ export class Polygon extends Shape {
       this._lastPos = this._lastPos.copy(this.pos);
 
       // The axes and vertices have to be re-calculated : set the recalc flag to true.
-      this.recalc = true;
+      this._recalc = true;
     }
     else {
       // The axes and vertices do not need to be calculated, we can set the recalc flag to false.
-      this.recalc = false;
+      this._recalc = false;
     }
   }
 
@@ -175,7 +175,7 @@ export class Polygon extends Shape {
   }
 
   /**
-   * Set the vertices relative positions.
+   * Reset the vertices relative positions.
    *
    * @param vertices relative positions
    */
@@ -190,7 +190,7 @@ export class Polygon extends Shape {
    * @returns axes
    */
   public get axes(): Vector[] {
-    // If the vertices do not need to be recalculated, we just reuse theù
+    // If the vertices do not need to be recalculated, we just reuse them
     if (!this.recalc) return this._axes;
 
     const vertices = this.vertices;
@@ -214,8 +214,12 @@ export class Polygon extends Shape {
    * @returns centroid
    */
   public get centroid(): Vector {
+    // If the vertices do not need to be recalculated, we just reuse them
+    if (!this.recalc) return this._centroid;
+
     const vertices = this.vertices;
     const len = vertices.length;
+
     // Reset the center to re-use it.
     this._centroid.set(0, 0)
 
@@ -240,14 +244,6 @@ export class Polygon extends Shape {
     return this._recalc;
   }
 
-  /**
-   * State if the vertices and polygon axes must be recalculated.
-   * 
-   * @param mustRecalculate
-   */
-  public set recalc(mustRecalculate: boolean) {
-    this._recalc = mustRecalculate;
-  }
 }
 
 // Polygon is a shape that is defined by a set of minimum 3 vertices.

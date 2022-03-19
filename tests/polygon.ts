@@ -4,7 +4,7 @@ var assert = require('assert');
 describe('Polygon', function () {
   it('cannot be instantiated with less than three vertices', function () {
     assert.throws(() => {
-      new Polygon([new Vector(0, 0), new Vector(0, 0)], new Vector(0, 0));
+      new Polygon([new Vector(0, 0), new Vector(0, 0)] as any, new Vector(0, 0));
     }, Error);
   });
 
