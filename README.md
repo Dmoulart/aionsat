@@ -12,4 +12,4 @@ This package is intended to be a learning project inspired by sat.js and dyn4j p
 # Perfs
 
 branch -> perf-b : optimize and mutates
--> autocalc : cache vertices and axes
+-> autocalc : based on perf-b cache vertices and axes
