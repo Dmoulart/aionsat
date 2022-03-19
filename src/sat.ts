@@ -29,6 +29,20 @@ export type Collision = {
  *
  */
 export class Sat {
+
+  /**
+   * The collision response object returned by the SAT intersection methods.
+   * We use only one of it to avoid creating new objects for each collision.
+   */
+  private _response: Collision | false = {
+    a: new Circle(0, Vector.zero),
+    b: new Circle(0, Vector.zero),
+    normal: Vector.zero,
+    overlap: 0,
+    aInB: false,
+    bInA: false,
+  };
+
   /**
    * Detect the collision between two shapes and return the overlap value as well as the
    * collision normal.
@@ -55,11 +69,13 @@ export class Sat {
    * Detect the collision between two polygons and return the overlap value as well as the
    * collision normal.
    *
-   * @param polyA
-   * @param polyB
+   * @param a the first polygon
+   * @param b the second polygon
    * @returns collision response
    */
   public polygonIntersectsPolgon(a: Polygon, b: Polygon): Collision | false {
+    // Get the axes of the two polygons
+    // By doing so we also calculate their vertices global positions and cache them
     const axesA = a.axes;
     const axesB = b.axes;
 
@@ -70,7 +86,7 @@ export class Sat {
     // and will not move during the collision detection
     a.recalc = false
     b.recalc = false
-    
+
     let overlap = Number.MAX_VALUE;
     let normal: Vector = Vector.origin;
 
@@ -157,25 +173,26 @@ export class Sat {
 
     // We must inform the polygons to recalculate their axes and vertices for the next time they 
     // will be called
-    a.recalc = true
-    b.recalc = true
+    a.recalc = true;
+    b.recalc = true;
 
-    return {
-      a,
-      b,
-      normal,
-      overlap,
-      aInB,
-      bInA
-    };
+    // This seems to be a little faster than affecting the object directly
+    (<Collision>this._response).a = a;
+    (<Collision>this._response).b = b;
+    (<Collision>this._response).normal = normal;
+    (<Collision>this._response).overlap = overlap;
+    (<Collision>this._response).aInB = aInB;
+    (<Collision>this._response).bInA = bInA;
+
+    return this._response
   }
 
   /**
    * Detect the collision between two circles and return the overlap value as well as the
    * collision normal.
    *
-   * @param a circle
-   * @param b other circle
+   * @param a the first circle
+   * @param b the second circle
    * @returns collision response
    */
   public circleIntersectsCircle(a: Circle, b: Circle): Collision | false {
@@ -213,8 +230,8 @@ export class Sat {
    * Detect the collision between a polygon and a circle and return the overlap value as well as the
    * collision normal.
    *
-   * @param a polygon
-   * @param b circle
+   * @param a the polygon
+   * @param b the circle
    * @returns collision response
    */
   public polygonIntersectsCircle(a: Polygon, b: Circle): Collision | false {
@@ -283,8 +300,8 @@ export class Sat {
    * Detect the collision between a circle and a polygon and return the overlap value as well as the
    * collision normal.
    *
-   * @param a circle
-   * @param b polygon
+   * @param a the circle
+   * @param b the polygon
    * @returns collision response
    */
   public circleIntersectsPolygon(a: Circle, b: Polygon): Collision | false {
@@ -301,4 +318,16 @@ export class Sat {
       bInA: response.aInB
     };
   }
+
+
+  /**
+   * The last collision response registered by the SAT collision detection.
+   * Warning : this response is mutated at every intersection method call
+   * 
+   * @return collision response or false if no collision has been detected
+   */
+  public get response(): Collision | false {
+    return this._response;
+  }
+
 }
